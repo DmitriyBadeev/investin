@@ -2,13 +2,13 @@ import React from "react"
 import styled from "styled-components"
 import Logo from "components/logo/Logo"
 import NavItem from "components/links/NavItem"
-import { AreaChartOutlined, AuditOutlined, BankOutlined } from "@ant-design/icons"
+import { AreaChartOutlined, AuditOutlined, BankOutlined, PoweroffOutlined, UserOutlined } from "@ant-design/icons"
 
 const SidebarWrapper = styled.div`
     width: 90px;
     height: 100%;
     position: fixed;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
     background: ${(props) => props.theme.white};
 `
 
@@ -20,7 +20,15 @@ const LogoWrapper = styled.div`
 `
 
 const ItemsWrapper = styled.div`
-    margin: 80px 8px 0;
+    margin: 0 8px;
+`
+
+const SpaceBetween = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 80px;
+    height: calc(100% - 160px);
 `
 
 const Sidebar: React.FC = () => {
@@ -29,17 +37,27 @@ const Sidebar: React.FC = () => {
             <LogoWrapper>
                 <Logo />
             </LogoWrapper>
-            <ItemsWrapper>
-                <NavItem link="/" icon={<AreaChartOutlined />} active={true}>
-                    Портфели
-                </NavItem>
-                <NavItem link="/" icon={<BankOutlined />} active={false}>
-                    Рынок
-                </NavItem>
-                <NavItem link="/" icon={<AuditOutlined />} active={false}>
-                    Операции
-                </NavItem>
-            </ItemsWrapper>
+            <SpaceBetween>
+                <ItemsWrapper>
+                    <NavItem link="/" icon={<AreaChartOutlined />} active={true}>
+                        Портфели
+                    </NavItem>
+                    <NavItem link="/market" icon={<BankOutlined />} active={false}>
+                        Рынок
+                    </NavItem>
+                    <NavItem link="/operations" icon={<AuditOutlined />} active={false}>
+                        Операции
+                    </NavItem>
+                </ItemsWrapper>
+                <ItemsWrapper>
+                    <NavItem link="/" icon={<UserOutlined />} active={false}>
+                        Профиль
+                    </NavItem>
+                    <NavItem link="/" icon={<PoweroffOutlined />} active={false}>
+                        Выйти
+                    </NavItem>
+                </ItemsWrapper>
+            </SpaceBetween>
         </SidebarWrapper>
     )
 }

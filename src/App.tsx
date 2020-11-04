@@ -19,6 +19,7 @@ const theme = {
     grey5: "#FAF7FB",
 
     baseTransition: "0.3s",
+    mainBackground: "#faf7ff",
 }
 
 const App: React.FC = () => {

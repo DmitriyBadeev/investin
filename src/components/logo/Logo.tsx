@@ -18,7 +18,7 @@ const LogoBackground = styled.span`
 const Logo: React.FC = () => {
     return (
         <LogoWrapper>
-            Invest<LogoBackground>In</LogoBackground>
+            Invest<LogoBackground>in</LogoBackground>
         </LogoWrapper>
     )
 }
