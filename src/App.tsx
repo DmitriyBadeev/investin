@@ -15,6 +15,7 @@ const theme = {
     grey0: "#FCF9FF",
     grey1: "#555555",
     grey2: "#B4B4B4",
+    grey3: "#E0E0E0",
     grey4: "#F4F4F4",
     grey5: "#FAF7FB",
 

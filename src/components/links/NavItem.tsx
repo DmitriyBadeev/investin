@@ -13,12 +13,24 @@ type activeProp = {
 }
 
 const ItemWrapper = styled.div<activeProp>`
-    background: ${(props) => (props.active ? props.theme.grey5 : props.theme.grey0)};
     text-align: center;
     margin: 10px 0;
+    position: relative;
     transition: all ${(props) => props.theme.baseTransition};
     &:hover {
-        background: ${(props) => props.theme.grey4};
+        background: ${(props) => props.theme.grey5};
+    }
+    
+    &::after {
+        content: '';
+        display: ${(props) => props.active ? 'block' : 'none'};
+        background: ${(props) => props.theme.primary};
+        width: 2px;
+        border-radius: 1px;
+        height: 57px;
+        position: absolute;
+        right: -9px;
+        top: 0;
     }
 `
 
@@ -26,7 +38,7 @@ const IconWrapper = styled.div<activeProp>`
     font-size: 25px;
     line-height: 30px;
     padding-top: 5px;
-    color: ${(props) => (props.active ? props.theme.primary : props.theme.grey1)};
+    color: ${(props) => (props.active ? props.theme.primary : props.theme.grey2)};
 `
 
 type propTypes = mainProps & activeProp

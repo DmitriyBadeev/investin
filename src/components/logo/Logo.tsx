@@ -8,7 +8,7 @@ const LogoWrapper = styled.div`
 
 const LogoBackground = styled.span`
     display: inline-block;
-    padding: 1px 3px;
+    padding: 0 3px;
     margin-left: 2px;
     border-radius: 2px;
     background: ${(props) => props.theme.primary};
@@ -18,7 +18,7 @@ const LogoBackground = styled.span`
 const Logo: React.FC = () => {
     return (
         <LogoWrapper>
-            Invest<LogoBackground>in</LogoBackground>
+            invest<LogoBackground>in</LogoBackground>
         </LogoWrapper>
     )
 }

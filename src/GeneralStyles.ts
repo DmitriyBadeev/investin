@@ -9,7 +9,7 @@ type SmallTextProps = {
 
 export const SmallText = styled(Text)<SmallTextProps>`
     font-size: 12px;
-    color: ${props => props.isPrimaryColor ? props.theme.primary : props.theme.grey1};
+    color: ${props => props.isPrimaryColor ? props.theme.primary : props.theme.grey2};
 `
 
 export const H3 = styled.h3`
