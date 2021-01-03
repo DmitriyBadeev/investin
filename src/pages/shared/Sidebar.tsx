@@ -10,7 +10,7 @@ const SidebarWrapper = styled.div`
     height: 100%;
     position: fixed;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
-    background: ${(props) => props.theme.white};
+    background: ${(props) => props.theme.cardBackground};
 `
 
 const LogoWrapper = styled.div`

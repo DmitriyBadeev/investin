@@ -6,6 +6,8 @@ import { BrowserRouter } from "react-router-dom"
 import Shared from "pages/shared/Shared"
 import Routes from "Routes"
 
+import './index.css'
+
 const theme = {
     primary: "#8F61DB",
     green: "#75D728",
@@ -20,7 +22,8 @@ const theme = {
     grey5: "#FAF7FB",
 
     baseTransition: "0.3s",
-    mainBackground: "#faf7ff",
+    mainBackground: "#FAF7FF",
+    cardBackground: "#FFFFFF"
 }
 
 const App: React.FC = () => {

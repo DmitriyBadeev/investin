@@ -1,11 +1,12 @@
 import React from "react"
 import { H3 } from "GeneralStyles"
+import FadePage from "components/fade/FadePage"
 
 const Operations: React.FC = () => {
     return (
-        <div>
+        <FadePage>
             <H3>Операции</H3>
-        </div>
+        </FadePage>
     )
 }
 

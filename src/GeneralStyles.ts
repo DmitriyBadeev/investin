@@ -1,15 +1,19 @@
 import styled from "styled-components";
-import {Typography} from 'antd'
+import { Typography } from 'antd'
 
-const { Text } = Typography
+const { Text: AntText } = Typography
 
 type SmallTextProps = {
-    isPrimaryColor?: boolean
+    $isPrimaryColor?: boolean
 }
 
-export const SmallText = styled(Text)<SmallTextProps>`
+export const SmallText = styled(AntText)<SmallTextProps>`
     font-size: 12px;
-    color: ${props => props.isPrimaryColor ? props.theme.primary : props.theme.grey2};
+    color: ${props => props.$isPrimaryColor ? props.theme.primary : props.theme.grey2};
+`
+
+export const Text = styled(AntText)`
+    font-size: 15px;
 `
 
 export const H3 = styled.h3`
