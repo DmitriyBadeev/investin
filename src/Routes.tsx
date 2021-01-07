@@ -1,22 +1,43 @@
 import React, { useEffect } from "react"
-import { useLocation, Switch, Route } from "react-router-dom"
+import {
+    useLocation,
+    Switch,
+    Route,
+    RouteProps,
+    Redirect,
+} from "react-router-dom"
 
 import Portfolios from "pages/Portfolios"
 import Market from "pages/Market"
 import Operations from "pages/Operations"
+import { observer } from "mobx-react"
+import useStore from "store/useStore"
+import Loading from "components/loading/Loading"
+import Enter from "pages/auth/Enter"
+import AuthComplete from "pages/auth/AuthComplete"
+import Signout from "pages/auth/Signout"
 
 const Routes: React.FC = () => {
     return (
         <ScrollToTop>
             <Switch>
-                <Route exact path="/">
+                <PrivateRoute exact path="/">
                     <Portfolios />
-                </Route>
-                <Route exact path="/market">
+                </PrivateRoute>
+                <PrivateRoute exact path="/market">
                     <Market />
-                </Route>
-                <Route exact path="/operations">
+                </PrivateRoute>
+                <PrivateRoute exact path="/operations">
                     <Operations />
+                </PrivateRoute>
+                <Route exact path="/enter">
+                    <Enter />
+                </Route>
+                <Route exact path="/auth-complete">
+                    <AuthComplete />
+                </Route>
+                <Route exact path="/signout">
+                    <Signout />
                 </Route>
             </Switch>
         </ScrollToTop>
@@ -34,3 +55,29 @@ const ScrollToTop: React.FC = (props) => {
 
     return <>{props.children}</>
 }
+
+const PrivateRoute: React.FC<RouteProps> = observer(({ children, ...rest }) => {
+    const { authService } = useStore()
+
+    if (authService.isLoadingUser) {
+        return <Loading />
+    }
+
+    return (
+        <Route
+            {...rest}
+            render={({ location }) =>
+                authService.isAuthenticated ? (
+                    children
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/enter",
+                            state: { from: location },
+                        }}
+                    />
+                )
+            }
+        />
+    )
+})

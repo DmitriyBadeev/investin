@@ -1,12 +1,28 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { ThemeProvider } from "styled-components"
 import { ConfigProvider } from "antd"
 import ru_RU from "antd/es/locale/ru_RU"
 import { BrowserRouter } from "react-router-dom"
 import Shared from "pages/shared/Shared"
 import Routes from "Routes"
+import ApolloClient from "apollo-boost"
+import { ApolloProvider } from "@apollo/react-hooks"
 
-import './index.css'
+import "./index.css"
+import { observer } from "mobx-react"
+import useStore from "store/useStore"
+
+const client = new ApolloClient({
+    uri: "https://finance.badeev.info/graphql?",
+    request: (operation) => {
+        const token = window.localStorage.getItem("token")
+        operation.setContext({
+            headers: {
+                Authorization: token ? token : "",
+            },
+        })
+    },
+})
 
 const theme = {
     primary: "#8F61DB",
@@ -23,21 +39,29 @@ const theme = {
 
     baseTransition: "0.3s",
     mainBackground: "#FAF7FF",
-    cardBackground: "#FFFFFF"
+    cardBackground: "#FFFFFF",
 }
 
-const App: React.FC = () => {
+const App: React.FC = observer(() => {
+    const { authService } = useStore()
+
+    useEffect(() => {
+        authService.loadUser()
+    }, [authService])
+
     return (
-        <ThemeProvider theme={theme}>
-            <ConfigProvider locale={ru_RU} csp={{ nonce: "investIn" }}>
-                <BrowserRouter>
-                    <Shared>
-                        <Routes />
-                    </Shared>
-                </BrowserRouter>
-            </ConfigProvider>
-        </ThemeProvider>
+        <ApolloProvider client={client}>
+            <ThemeProvider theme={theme}>
+                <ConfigProvider locale={ru_RU} csp={{ nonce: "investIn" }}>
+                    <BrowserRouter>
+                        <Shared>
+                            <Routes />
+                        </Shared>
+                    </BrowserRouter>
+                </ConfigProvider>
+            </ThemeProvider>
+        </ApolloProvider>
     )
-}
+})
 
 export default App
