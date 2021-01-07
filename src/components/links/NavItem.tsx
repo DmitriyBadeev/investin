@@ -6,6 +6,7 @@ import { SmallText } from "GeneralStyles"
 type mainProps = {
     icon: any
     link: string
+    onClick?: () => void
 }
 
 type activeProp = {
@@ -46,7 +47,7 @@ type propTypes = mainProps & activeProp
 
 const NavItem: React.FC<propTypes> = (props) => {
     return (
-        <Link to={props.link}>
+        <Link to={props.link} onClick={() => props.onClick && props.onClick()}>
             <ItemWrapper active={props.active}>
                 <IconWrapper active={props.active}>{props.icon}</IconWrapper>
                 <SmallText $isPrimaryColor={props.active}>

@@ -468,6 +468,14 @@ export type PortfoliosQuery = (
   )>>> }
 );
 
+export type SecretQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SecretQuery = (
+  { __typename?: 'Queries' }
+  & Pick<Queries, 'secretData'>
+);
+
 
 export const PortfoliosDocument = gql`
     query portfolios {
@@ -502,3 +510,33 @@ export function usePortfoliosLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type PortfoliosQueryHookResult = ReturnType<typeof usePortfoliosQuery>;
 export type PortfoliosLazyQueryHookResult = ReturnType<typeof usePortfoliosLazyQuery>;
 export type PortfoliosQueryResult = ApolloReactCommon.QueryResult<PortfoliosQuery, PortfoliosQueryVariables>;
+export const SecretDocument = gql`
+    query Secret {
+  secretData
+}
+    `;
+
+/**
+ * __useSecretQuery__
+ *
+ * To run a query within a React component, call `useSecretQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSecretQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSecretQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSecretQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SecretQuery, SecretQueryVariables>) {
+        return ApolloReactHooks.useQuery<SecretQuery, SecretQueryVariables>(SecretDocument, baseOptions);
+      }
+export function useSecretLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SecretQuery, SecretQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SecretQuery, SecretQueryVariables>(SecretDocument, baseOptions);
+        }
+export type SecretQueryHookResult = ReturnType<typeof useSecretQuery>;
+export type SecretLazyQueryHookResult = ReturnType<typeof useSecretLazyQuery>;
+export type SecretQueryResult = ApolloReactCommon.QueryResult<SecretQuery, SecretQueryVariables>;

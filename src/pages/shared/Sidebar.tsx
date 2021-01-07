@@ -1,9 +1,17 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import Logo from "components/logo/Logo"
 import NavItem from "components/links/NavItem"
-import { AreaChartOutlined, AuditOutlined, BankOutlined, PoweroffOutlined, UserOutlined } from "@ant-design/icons"
+import {
+    AreaChartOutlined,
+    AuditOutlined,
+    BankOutlined,
+    PoweroffOutlined,
+    UserOutlined,
+} from "@ant-design/icons"
 import { useLocation } from "react-router-dom"
+import useStore from "store/useStore"
+import { useSecretLazyQuery } from "finance-types"
 
 const SidebarWrapper = styled.div`
     width: 90px;
@@ -34,6 +42,27 @@ const SpaceBetween = styled.div`
 
 const Sidebar: React.FC = () => {
     const location = useLocation()
+    const { authService } = useStore()
+
+    const [query, { data, error }] = useSecretLazyQuery({
+        fetchPolicy: "no-cache",
+    })
+
+    useEffect(() => {
+        const timerId = setInterval(() => {
+            query()
+        }, 15000)
+
+        return () => clearInterval(timerId)
+    }, [query])
+
+    useEffect(() => {
+        const graphQlCodeError = error?.graphQLErrors[0]?.extensions?.code
+
+        if (graphQlCodeError === "AUTH_NOT_AUTHORIZED") {
+            authService.signin()
+        }
+    }, [data, query, error, authService])
 
     return (
         <SidebarWrapper>
@@ -42,21 +71,42 @@ const Sidebar: React.FC = () => {
             </LogoWrapper>
             <SpaceBetween>
                 <ItemsWrapper>
-                    <NavItem link="/" icon={<AreaChartOutlined />} active={location.pathname === "/"}>
+                    <NavItem
+                        link="/"
+                        icon={<AreaChartOutlined />}
+                        active={location.pathname === "/"}
+                    >
                         Портфели
                     </NavItem>
-                    <NavItem link="/market" icon={<BankOutlined />} active={location.pathname === "/market"}>
+                    <NavItem
+                        link="/market"
+                        icon={<BankOutlined />}
+                        active={location.pathname === "/market"}
+                    >
                         Рынок
                     </NavItem>
-                    <NavItem link="/operations" icon={<AuditOutlined />} active={location.pathname === "/operations"}>
+                    <NavItem
+                        link="/operations"
+                        icon={<AuditOutlined />}
+                        active={location.pathname === "/operations"}
+                    >
                         Операции
                     </NavItem>
                 </ItemsWrapper>
                 <ItemsWrapper>
-                    <NavItem link="/profile" icon={<UserOutlined />} active={location.pathname === "/profile"}>
+                    <NavItem
+                        link="/profile"
+                        icon={<UserOutlined />}
+                        active={location.pathname === "/profile"}
+                    >
                         Профиль
                     </NavItem>
-                    <NavItem link="/" icon={<PoweroffOutlined />} active={false}>
+                    <NavItem
+                        link="/"
+                        onClick={authService.signout}
+                        icon={<PoweroffOutlined />}
+                        active={false}
+                    >
                         Выйти
                     </NavItem>
                 </ItemsWrapper>

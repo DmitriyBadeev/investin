@@ -1,4 +1,4 @@
-import { observable, action, makeObservable } from "mobx"
+import { observable, action } from "mobx"
 
 export type portfolioDataType = {
     id: number
@@ -6,18 +6,12 @@ export type portfolioDataType = {
 }
 
 export class PortfolioStore {
-    constructor() {
-        makeObservable(this, {
-            activePortfolioIds: observable,
-            togglePortfolio: action,
-        })
-    }
-
     portfolios: portfolioDataType[] = []
     firstUpdate: boolean = false
-    activePortfolioIds = new Set<number>()
 
-    togglePortfolio(id: number) {
+    @observable activePortfolioIds = new Set<number>()
+
+    @action togglePortfolio(id: number) {
         const hasId = this.activePortfolioIds.has(id)
 
         if (hasId) {
@@ -31,9 +25,11 @@ export class PortfolioStore {
         if (!this.firstUpdate) {
             this.portfolios = portfolios
 
-            const firstPortfolioId = portfolios[0].id
+            if (portfolios.length > 0) {
+                const firstPortfolioId = portfolios[0].id
 
-            this.togglePortfolio(firstPortfolioId)
+                this.togglePortfolio(firstPortfolioId)
+            }
         }
 
         this.firstUpdate = true
