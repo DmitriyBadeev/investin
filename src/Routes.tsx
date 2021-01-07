@@ -60,7 +60,7 @@ const PrivateRoute: React.FC<RouteProps> = observer(({ children, ...rest }) => {
     const { authService } = useStore()
 
     if (authService.isLoadingUser) {
-        return <Loading />
+        return <Loading height="70vh" size={45} />
     }
 
     return (

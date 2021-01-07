@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { Typography } from 'antd'
+import styled from "styled-components"
+import { Typography } from "antd"
 
 const { Text: AntText } = Typography
 
@@ -9,7 +9,8 @@ type SmallTextProps = {
 
 export const SmallText = styled(AntText)<SmallTextProps>`
     font-size: 12px;
-    color: ${props => props.$isPrimaryColor ? props.theme.primary : props.theme.grey2};
+    color: ${(props) =>
+        props.$isPrimaryColor ? props.theme.primary : props.theme.grey2};
 `
 
 export const Text = styled(AntText)`
@@ -19,6 +20,11 @@ export const Text = styled(AntText)`
 export const H3 = styled.h3`
     font-size: 25px;
     font-weight: 600;
-    color: ${props => props.theme.black};
-    font-family: 'Open Sans', sans-serif;
+    color: ${(props) => props.theme.black};
+    font-family: "Open Sans", sans-serif;
+`
+
+export const FlexCenter = styled.div`
+    display: flex;
+    justify-content: center;
 `
