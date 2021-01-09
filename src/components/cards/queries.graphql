@@ -1,0 +1,10 @@
+query aggregatePortfolioPaymentProfit($portfolioIds: [Int!]) {
+    aggregatePortfolioPaymentProfit(portfolioIds: $portfolioIds) {
+        isSuccess
+        message
+        result {
+            value
+            percent
+        }
+    }
+}

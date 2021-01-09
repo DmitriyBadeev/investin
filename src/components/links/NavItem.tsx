@@ -50,7 +50,10 @@ const NavItem: React.FC<propTypes> = (props) => {
         <Link to={props.link} onClick={() => props.onClick && props.onClick()}>
             <ItemWrapper active={props.active}>
                 <IconWrapper active={props.active}>{props.icon}</IconWrapper>
-                <SmallText $isPrimaryColor={props.active}>
+                <SmallText
+                    $isPrimaryColor={props.active}
+                    $isGrey={!props.active}
+                >
                     {props.children}
                 </SmallText>
             </ItemWrapper>

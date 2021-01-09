@@ -7,10 +7,10 @@ import Shared from "pages/shared/Shared"
 import Routes from "Routes"
 import ApolloClient from "apollo-boost"
 import { ApolloProvider } from "@apollo/react-hooks"
-
-import "./index.css"
 import { observer } from "mobx-react"
 import useStore from "store/useStore"
+
+import "./index.css"
 
 const client = new ApolloClient({
     uri: "https://finance.badeev.info/graphql?",

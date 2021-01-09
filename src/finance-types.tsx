@@ -22,8 +22,7 @@ export type Scalars = {
 
 export type Queries = {
   __typename?: 'Queries';
-  aggregatePortfolioPaymentProfit?: Maybe<OperationResultOfInt32>;
-  aggregatePortfolioPaymentProfitPercent?: Maybe<OperationResultOfDouble>;
+  aggregatePortfolioPaymentProfit?: Maybe<OperationResultOfValuePercent>;
   aggregatePortfolioPayments?: Maybe<OperationResultOfListOfPayment>;
   allAssetOperations?: Maybe<Array<Maybe<AssetOperation>>>;
   allAssetPricesReport?: Maybe<AssetPricesReport>;
@@ -49,11 +48,6 @@ export type Queries = {
 
 
 export type QueriesAggregatePortfolioPaymentProfitArgs = {
-  portfolioIds?: Maybe<Array<Scalars['Int']>>;
-};
-
-
-export type QueriesAggregatePortfolioPaymentProfitPercentArgs = {
   portfolioIds?: Maybe<Array<Scalars['Int']>>;
 };
 
@@ -198,18 +192,11 @@ export type OperationResultOfListOfPayment = {
   result?: Maybe<Array<Maybe<Payment>>>;
 };
 
-export type OperationResultOfInt32 = {
-  __typename?: 'OperationResultOfInt32';
+export type OperationResultOfValuePercent = {
+  __typename?: 'OperationResultOfValuePercent';
   isSuccess: Scalars['Boolean'];
   message?: Maybe<Scalars['String']>;
-  result: Scalars['Int'];
-};
-
-export type OperationResultOfDouble = {
-  __typename?: 'OperationResultOfDouble';
-  isSuccess: Scalars['Boolean'];
-  message?: Maybe<Scalars['String']>;
-  result: Scalars['Float'];
+  result?: Maybe<ValuePercent>;
 };
 
 export type AllPortfoliosReport = {
@@ -446,6 +433,12 @@ export type Payment = {
   ticket?: Maybe<Scalars['String']>;
 };
 
+export type ValuePercent = {
+  __typename?: 'ValuePercent';
+  percent: Scalars['Float'];
+  value: Scalars['Int'];
+};
+
 export type PaymentData = {
   __typename?: 'PaymentData';
   allPayment: Scalars['Int'];
@@ -456,6 +449,23 @@ export type PaymentData = {
   registryCloseDate: Scalars['DateTime'];
   ticket?: Maybe<Scalars['String']>;
 };
+
+export type AggregatePortfolioPaymentProfitQueryVariables = Exact<{
+  portfolioIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type AggregatePortfolioPaymentProfitQuery = (
+  { __typename?: 'Queries' }
+  & { aggregatePortfolioPaymentProfit?: Maybe<(
+    { __typename?: 'OperationResultOfValuePercent' }
+    & Pick<OperationResultOfValuePercent, 'isSuccess' | 'message'>
+    & { result?: Maybe<(
+      { __typename?: 'ValuePercent' }
+      & Pick<ValuePercent, 'value' | 'percent'>
+    )> }
+  )> }
+);
 
 export type PortfoliosQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -477,6 +487,44 @@ export type SecretQuery = (
 );
 
 
+export const AggregatePortfolioPaymentProfitDocument = gql`
+    query aggregatePortfolioPaymentProfit($portfolioIds: [Int!]) {
+  aggregatePortfolioPaymentProfit(portfolioIds: $portfolioIds) {
+    isSuccess
+    message
+    result {
+      value
+      percent
+    }
+  }
+}
+    `;
+
+/**
+ * __useAggregatePortfolioPaymentProfitQuery__
+ *
+ * To run a query within a React component, call `useAggregatePortfolioPaymentProfitQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAggregatePortfolioPaymentProfitQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAggregatePortfolioPaymentProfitQuery({
+ *   variables: {
+ *      portfolioIds: // value for 'portfolioIds'
+ *   },
+ * });
+ */
+export function useAggregatePortfolioPaymentProfitQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AggregatePortfolioPaymentProfitQuery, AggregatePortfolioPaymentProfitQueryVariables>) {
+        return ApolloReactHooks.useQuery<AggregatePortfolioPaymentProfitQuery, AggregatePortfolioPaymentProfitQueryVariables>(AggregatePortfolioPaymentProfitDocument, baseOptions);
+      }
+export function useAggregatePortfolioPaymentProfitLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AggregatePortfolioPaymentProfitQuery, AggregatePortfolioPaymentProfitQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AggregatePortfolioPaymentProfitQuery, AggregatePortfolioPaymentProfitQueryVariables>(AggregatePortfolioPaymentProfitDocument, baseOptions);
+        }
+export type AggregatePortfolioPaymentProfitQueryHookResult = ReturnType<typeof useAggregatePortfolioPaymentProfitQuery>;
+export type AggregatePortfolioPaymentProfitLazyQueryHookResult = ReturnType<typeof useAggregatePortfolioPaymentProfitLazyQuery>;
+export type AggregatePortfolioPaymentProfitQueryResult = ApolloReactCommon.QueryResult<AggregatePortfolioPaymentProfitQuery, AggregatePortfolioPaymentProfitQueryVariables>;
 export const PortfoliosDocument = gql`
     query portfolios {
   portfolios {
