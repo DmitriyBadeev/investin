@@ -13,7 +13,7 @@ const AuthComplete: React.FC = observer(() => {
 
     if (!authService.isAuthenticating) return <Redirect to="/" />
 
-    return <Loading />
+    return <Loading height="70vh" size="big" />
 })
 
 export default AuthComplete

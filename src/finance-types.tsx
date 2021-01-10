@@ -22,6 +22,7 @@ export type Scalars = {
 
 export type Queries = {
   __typename?: 'Queries';
+  aggregatePortfolioPaperProfit?: Maybe<OperationResultOfValuePercent>;
   aggregatePortfolioPaymentProfit?: Maybe<OperationResultOfValuePercent>;
   aggregatePortfolioPayments?: Maybe<OperationResultOfListOfPayment>;
   allAssetOperations?: Maybe<Array<Maybe<AssetOperation>>>;
@@ -44,6 +45,11 @@ export type Queries = {
   stockCandles?: Maybe<Array<Maybe<StockCandle>>>;
   stockReports?: Maybe<Array<Maybe<StockReport>>>;
   test?: Maybe<Scalars['String']>;
+};
+
+
+export type QueriesAggregatePortfolioPaperProfitArgs = {
+  portfolioIds?: Maybe<Array<Scalars['Int']>>;
 };
 
 
@@ -467,6 +473,23 @@ export type AggregatePortfolioPaymentProfitQuery = (
   )> }
 );
 
+export type AggregatePortfolioPaperProfitQueryVariables = Exact<{
+  portfolioIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type AggregatePortfolioPaperProfitQuery = (
+  { __typename?: 'Queries' }
+  & { aggregatePortfolioPaperProfit?: Maybe<(
+    { __typename?: 'OperationResultOfValuePercent' }
+    & Pick<OperationResultOfValuePercent, 'isSuccess' | 'message'>
+    & { result?: Maybe<(
+      { __typename?: 'ValuePercent' }
+      & Pick<ValuePercent, 'value' | 'percent'>
+    )> }
+  )> }
+);
+
 export type PortfoliosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -525,6 +548,44 @@ export function useAggregatePortfolioPaymentProfitLazyQuery(baseOptions?: Apollo
 export type AggregatePortfolioPaymentProfitQueryHookResult = ReturnType<typeof useAggregatePortfolioPaymentProfitQuery>;
 export type AggregatePortfolioPaymentProfitLazyQueryHookResult = ReturnType<typeof useAggregatePortfolioPaymentProfitLazyQuery>;
 export type AggregatePortfolioPaymentProfitQueryResult = ApolloReactCommon.QueryResult<AggregatePortfolioPaymentProfitQuery, AggregatePortfolioPaymentProfitQueryVariables>;
+export const AggregatePortfolioPaperProfitDocument = gql`
+    query aggregatePortfolioPaperProfit($portfolioIds: [Int!]) {
+  aggregatePortfolioPaperProfit(portfolioIds: $portfolioIds) {
+    isSuccess
+    message
+    result {
+      value
+      percent
+    }
+  }
+}
+    `;
+
+/**
+ * __useAggregatePortfolioPaperProfitQuery__
+ *
+ * To run a query within a React component, call `useAggregatePortfolioPaperProfitQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAggregatePortfolioPaperProfitQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAggregatePortfolioPaperProfitQuery({
+ *   variables: {
+ *      portfolioIds: // value for 'portfolioIds'
+ *   },
+ * });
+ */
+export function useAggregatePortfolioPaperProfitQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AggregatePortfolioPaperProfitQuery, AggregatePortfolioPaperProfitQueryVariables>) {
+        return ApolloReactHooks.useQuery<AggregatePortfolioPaperProfitQuery, AggregatePortfolioPaperProfitQueryVariables>(AggregatePortfolioPaperProfitDocument, baseOptions);
+      }
+export function useAggregatePortfolioPaperProfitLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AggregatePortfolioPaperProfitQuery, AggregatePortfolioPaperProfitQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AggregatePortfolioPaperProfitQuery, AggregatePortfolioPaperProfitQueryVariables>(AggregatePortfolioPaperProfitDocument, baseOptions);
+        }
+export type AggregatePortfolioPaperProfitQueryHookResult = ReturnType<typeof useAggregatePortfolioPaperProfitQuery>;
+export type AggregatePortfolioPaperProfitLazyQueryHookResult = ReturnType<typeof useAggregatePortfolioPaperProfitLazyQuery>;
+export type AggregatePortfolioPaperProfitQueryResult = ApolloReactCommon.QueryResult<AggregatePortfolioPaperProfitQuery, AggregatePortfolioPaperProfitQueryVariables>;
 export const PortfoliosDocument = gql`
     query portfolios {
   portfolios {

@@ -8,3 +8,14 @@ query aggregatePortfolioPaymentProfit($portfolioIds: [Int!]) {
         }
     }
 }
+
+query aggregatePortfolioPaperProfit($portfolioIds: [Int!]) {
+    aggregatePortfolioPaperProfit(portfolioIds: $portfolioIds) {
+        isSuccess
+        message
+        result {
+            value
+            percent
+        }
+    }
+}

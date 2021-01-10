@@ -3,18 +3,18 @@ import BigFractionalNumber from "components/numbers/BigFractionalNumber"
 import Indicator from "components/numbers/Indicator"
 import React, { useEffect } from "react"
 import Card from "./Card"
-import { useAggregatePortfolioPaymentProfitLazyQuery } from "finance-types"
+import { useAggregatePortfolioPaperProfitLazyQuery } from "finance-types"
 import Loading from "components/loading/Loading"
 
 type propTypes = {
     portfolios: number[]
 }
 
-const DividendProfit: React.FC<propTypes> = (props) => {
+const PaperProfitCard: React.FC<propTypes> = (props) => {
     const [
         query,
         { data, loading, error },
-    ] = useAggregatePortfolioPaymentProfitLazyQuery()
+    ] = useAggregatePortfolioPaperProfitLazyQuery()
 
     useEffect(() => {
         query({
@@ -27,26 +27,26 @@ const DividendProfit: React.FC<propTypes> = (props) => {
     if (loading)
         return (
             <Col span={5}>
-                <Card title="Дивидендная прибыль">
+                <Card title="Бумажная прибыль">
                     <Loading height="60px" />
                 </Card>
             </Col>
         )
     if (error) message.error(error.message)
 
-    var isSuccess = data?.aggregatePortfolioPaymentProfit?.isSuccess
-    var apiMessage = data?.aggregatePortfolioPaymentProfit?.message
-    const profit = data?.aggregatePortfolioPaymentProfit?.result?.value || 0
-    const percent = data?.aggregatePortfolioPaymentProfit?.result?.percent || 0
+    var isSuccess = data?.aggregatePortfolioPaperProfit?.isSuccess
+    var apiMessage = data?.aggregatePortfolioPaperProfit?.message
+    const profit = data?.aggregatePortfolioPaperProfit?.result?.value || 0
+    const percent = data?.aggregatePortfolioPaperProfit?.result?.percent || 0
 
-    if (data?.aggregatePortfolioPaymentProfit && !isSuccess) {
+    if (data?.aggregatePortfolioPaperProfit && !isSuccess) {
         message.error(apiMessage)
     }
-    console.log(data?.aggregatePortfolioPaymentProfit?.message)
+    console.log(data?.aggregatePortfolioPaperProfit?.message)
 
     return (
         <Col span={5}>
-            <Card title="Дивидендная прибыль">
+            <Card title="Бумажная прибыль">
                 <BigFractionalNumber
                     number={profit}
                     color="dependingOnSign"
@@ -58,4 +58,4 @@ const DividendProfit: React.FC<propTypes> = (props) => {
     )
 }
 
-export default DividendProfit
+export default PaperProfitCard

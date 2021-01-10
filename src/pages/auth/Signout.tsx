@@ -16,7 +16,7 @@ const Signout: React.FC = observer(() => {
         window.location.replace("https://investin.badeev.info")
     }
 
-    return <Loading />
+    return <Loading height="70vh" size="big" />
 })
 
 export default Signout

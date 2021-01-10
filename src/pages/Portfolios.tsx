@@ -8,8 +8,8 @@ import styled from "styled-components"
 import BigFractionalNumber from "components/numbers/BigFractionalNumber"
 import { SmallText } from "GeneralStyles"
 import { getCurrency } from "components/numbers/Helper"
-import Indicator from "components/numbers/Indicator"
 import DividendProfit from "components/cards/DividendProfit"
+import PaperProfitCard from "components/cards/PaperProfitCard"
 import { observer } from "mobx-react"
 import useStore from "store/useStore"
 
@@ -36,16 +36,7 @@ const Portfolios: React.FC = observer(() => {
                         </SmallText>
                     </Card>
                 </Col>
-                <Col span={5}>
-                    <Card title="Бумажная прибыль">
-                        <BigFractionalNumber
-                            number={212323}
-                            color="dependingOnSign"
-                            withSign={true}
-                        />
-                        <Indicator number={3.4} />
-                    </Card>
-                </Col>
+                <PaperProfitCard portfolios={portfolios} />
                 <DividendProfit portfolios={portfolios} />
                 <Col span={9}>
                     <Card title="Свободных средств"></Card>

@@ -5,7 +5,7 @@ import { FlexCenter } from "GeneralStyles"
 import styled from "styled-components"
 
 type propTypes = {
-    size?: number
+    size?: "small" | "normal" | "big"
     height?: string
 }
 
@@ -18,8 +18,10 @@ const Wrapper = styled(FlexCenter)<styleProps>`
     align-items: center;
 `
 
-const Loading: React.FC<propTypes> = ({ size = 32, height = "auto" }) => {
-    const antIcon = <LoadingOutlined style={{ fontSize: size }} spin />
+const Loading: React.FC<propTypes> = ({ size = "normal", height = "auto" }) => {
+    const fontSize = size === "normal" ? 32 : size === "big" ? 48 : 16
+
+    const antIcon = <LoadingOutlined style={{ fontSize: fontSize }} spin />
 
     return (
         <Wrapper $height={height}>

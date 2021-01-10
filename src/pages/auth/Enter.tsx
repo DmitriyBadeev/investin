@@ -10,7 +10,7 @@ const Enter: React.FC = observer(() => {
         authService.signin()
     }, [authService])
 
-    return <Loading />
+    return <Loading height="70vh" size="big" />
 })
 
 export default Enter
