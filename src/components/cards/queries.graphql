@@ -19,3 +19,14 @@ query aggregatePortfolioPaperProfit($portfolioIds: [Int!]) {
         }
     }
 }
+
+query aggregatePortfolioCostWithInvestSum($portfolioIds: [Int!]) {
+	aggregatePortfolioCostWithInvestSum(portfolioIds: $portfolioIds) {
+    isSuccess
+    message
+    result {
+      cost
+      investSum
+    }
+  }
+}

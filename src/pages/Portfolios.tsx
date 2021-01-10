@@ -5,11 +5,9 @@ import { Col, Row } from "antd"
 import PortfolioSelector from "components/portfolios/PortfolioSelector"
 import Card from "components/cards/Card"
 import styled from "styled-components"
-import BigFractionalNumber from "components/numbers/BigFractionalNumber"
-import { SmallText } from "GeneralStyles"
-import { getCurrency } from "components/numbers/Helper"
 import DividendProfit from "components/cards/DividendProfit"
 import PaperProfitCard from "components/cards/PaperProfitCard"
+import CostWithInvestSum from "components/cards/CostWithInvestSum"
 import { observer } from "mobx-react"
 import useStore from "store/useStore"
 
@@ -28,14 +26,7 @@ const Portfolios: React.FC = observer(() => {
             </Row>
             <PortfolioSelector />
             <Content gutter={20}>
-                <Col span={5}>
-                    <Card title="Суммарная стоимость">
-                        <BigFractionalNumber number={4026732} />
-                        <SmallText $isGrey={true}>
-                            Инвестировано: {getCurrency(3732110)}
-                        </SmallText>
-                    </Card>
-                </Col>
+                <CostWithInvestSum portfolios={portfolios} />
                 <PaperProfitCard portfolios={portfolios} />
                 <DividendProfit portfolios={portfolios} />
                 <Col span={9}>

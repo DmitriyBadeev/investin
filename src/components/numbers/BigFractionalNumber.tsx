@@ -26,7 +26,7 @@ const Wrapper = styled.div<styleProps>`
         }
     }};
     font-weight: 500;
-    display: inline-flex;
+    display: flex;
     align-items: baseline;
 `
 

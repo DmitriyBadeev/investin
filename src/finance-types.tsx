@@ -22,6 +22,9 @@ export type Scalars = {
 
 export type Queries = {
   __typename?: 'Queries';
+  aggregateInvestSum: Scalars['Int'];
+  aggregatePortfolioCost?: Maybe<OperationResultOfInt32>;
+  aggregatePortfolioCostWithInvestSum?: Maybe<OperationResultOfCostWithInvestSum>;
   aggregatePortfolioPaperProfit?: Maybe<OperationResultOfValuePercent>;
   aggregatePortfolioPaymentProfit?: Maybe<OperationResultOfValuePercent>;
   aggregatePortfolioPayments?: Maybe<OperationResultOfListOfPayment>;
@@ -45,6 +48,21 @@ export type Queries = {
   stockCandles?: Maybe<Array<Maybe<StockCandle>>>;
   stockReports?: Maybe<Array<Maybe<StockReport>>>;
   test?: Maybe<Scalars['String']>;
+};
+
+
+export type QueriesAggregateInvestSumArgs = {
+  portfolioIds?: Maybe<Array<Scalars['Int']>>;
+};
+
+
+export type QueriesAggregatePortfolioCostArgs = {
+  portfolioIds?: Maybe<Array<Scalars['Int']>>;
+};
+
+
+export type QueriesAggregatePortfolioCostWithInvestSumArgs = {
+  portfolioIds?: Maybe<Array<Scalars['Int']>>;
 };
 
 
@@ -203,6 +221,20 @@ export type OperationResultOfValuePercent = {
   isSuccess: Scalars['Boolean'];
   message?: Maybe<Scalars['String']>;
   result?: Maybe<ValuePercent>;
+};
+
+export type OperationResultOfInt32 = {
+  __typename?: 'OperationResultOfInt32';
+  isSuccess: Scalars['Boolean'];
+  message?: Maybe<Scalars['String']>;
+  result: Scalars['Int'];
+};
+
+export type OperationResultOfCostWithInvestSum = {
+  __typename?: 'OperationResultOfCostWithInvestSum';
+  isSuccess: Scalars['Boolean'];
+  message?: Maybe<Scalars['String']>;
+  result?: Maybe<CostWithInvestSum>;
 };
 
 export type AllPortfoliosReport = {
@@ -445,6 +477,12 @@ export type ValuePercent = {
   value: Scalars['Int'];
 };
 
+export type CostWithInvestSum = {
+  __typename?: 'CostWithInvestSum';
+  cost: Scalars['Int'];
+  investSum: Scalars['Int'];
+};
+
 export type PaymentData = {
   __typename?: 'PaymentData';
   allPayment: Scalars['Int'];
@@ -486,6 +524,23 @@ export type AggregatePortfolioPaperProfitQuery = (
     & { result?: Maybe<(
       { __typename?: 'ValuePercent' }
       & Pick<ValuePercent, 'value' | 'percent'>
+    )> }
+  )> }
+);
+
+export type AggregatePortfolioCostWithInvestSumQueryVariables = Exact<{
+  portfolioIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type AggregatePortfolioCostWithInvestSumQuery = (
+  { __typename?: 'Queries' }
+  & { aggregatePortfolioCostWithInvestSum?: Maybe<(
+    { __typename?: 'OperationResultOfCostWithInvestSum' }
+    & Pick<OperationResultOfCostWithInvestSum, 'isSuccess' | 'message'>
+    & { result?: Maybe<(
+      { __typename?: 'CostWithInvestSum' }
+      & Pick<CostWithInvestSum, 'cost' | 'investSum'>
     )> }
   )> }
 );
@@ -586,6 +641,44 @@ export function useAggregatePortfolioPaperProfitLazyQuery(baseOptions?: ApolloRe
 export type AggregatePortfolioPaperProfitQueryHookResult = ReturnType<typeof useAggregatePortfolioPaperProfitQuery>;
 export type AggregatePortfolioPaperProfitLazyQueryHookResult = ReturnType<typeof useAggregatePortfolioPaperProfitLazyQuery>;
 export type AggregatePortfolioPaperProfitQueryResult = ApolloReactCommon.QueryResult<AggregatePortfolioPaperProfitQuery, AggregatePortfolioPaperProfitQueryVariables>;
+export const AggregatePortfolioCostWithInvestSumDocument = gql`
+    query aggregatePortfolioCostWithInvestSum($portfolioIds: [Int!]) {
+  aggregatePortfolioCostWithInvestSum(portfolioIds: $portfolioIds) {
+    isSuccess
+    message
+    result {
+      cost
+      investSum
+    }
+  }
+}
+    `;
+
+/**
+ * __useAggregatePortfolioCostWithInvestSumQuery__
+ *
+ * To run a query within a React component, call `useAggregatePortfolioCostWithInvestSumQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAggregatePortfolioCostWithInvestSumQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAggregatePortfolioCostWithInvestSumQuery({
+ *   variables: {
+ *      portfolioIds: // value for 'portfolioIds'
+ *   },
+ * });
+ */
+export function useAggregatePortfolioCostWithInvestSumQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AggregatePortfolioCostWithInvestSumQuery, AggregatePortfolioCostWithInvestSumQueryVariables>) {
+        return ApolloReactHooks.useQuery<AggregatePortfolioCostWithInvestSumQuery, AggregatePortfolioCostWithInvestSumQueryVariables>(AggregatePortfolioCostWithInvestSumDocument, baseOptions);
+      }
+export function useAggregatePortfolioCostWithInvestSumLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AggregatePortfolioCostWithInvestSumQuery, AggregatePortfolioCostWithInvestSumQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AggregatePortfolioCostWithInvestSumQuery, AggregatePortfolioCostWithInvestSumQueryVariables>(AggregatePortfolioCostWithInvestSumDocument, baseOptions);
+        }
+export type AggregatePortfolioCostWithInvestSumQueryHookResult = ReturnType<typeof useAggregatePortfolioCostWithInvestSumQuery>;
+export type AggregatePortfolioCostWithInvestSumLazyQueryHookResult = ReturnType<typeof useAggregatePortfolioCostWithInvestSumLazyQuery>;
+export type AggregatePortfolioCostWithInvestSumQueryResult = ApolloReactCommon.QueryResult<AggregatePortfolioCostWithInvestSumQuery, AggregatePortfolioCostWithInvestSumQueryVariables>;
 export const PortfoliosDocument = gql`
     query portfolios {
   portfolios {
