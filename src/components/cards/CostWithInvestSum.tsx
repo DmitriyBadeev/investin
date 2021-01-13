@@ -5,7 +5,7 @@ import Card from "./Card"
 import { useAggregatePortfolioCostWithInvestSumLazyQuery } from "finance-types"
 import Loading from "components/loading/Loading"
 import { SmallText } from "GeneralStyles"
-import { getCurrency } from "components/numbers/Helper"
+import { getCurrency } from "helpers/financeHelpers"
 
 type propTypes = {
     portfolios: number[]
@@ -44,13 +44,12 @@ const CostWithInvestSum: React.FC<propTypes> = (props) => {
     if (data?.aggregatePortfolioCostWithInvestSum && !isSuccess) {
         message.error(apiMessage)
     }
-    console.log(data?.aggregatePortfolioCostWithInvestSum?.message)
 
     return (
         <Col span={5}>
             <Card title="Суммарная стоимость">
                 <BigFractionalNumber number={cost} />
-                <SmallText $isGrey={true}>
+                <SmallText $color="grey2">
                     Инвестировано: {getCurrency(investSum)}
                 </SmallText>
             </Card>

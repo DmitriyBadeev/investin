@@ -17,7 +17,7 @@ const Title = styled(Text)`
 const Content = styled.div``
 
 type propTypes = {
-    title: string
+    title: string | React.ReactNode
 }
 
 const Card: React.FC<propTypes> = (props) => {

@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons"
-import { getPercent } from "./Helper"
-import { SmallText } from "GeneralStyles"
+import { getDoubleCurrency, getPercent } from "helpers/financeHelpers"
+import { SmallText, Text } from "GeneralStyles"
 
 type propTypes = {
     number: number
@@ -42,7 +42,7 @@ const ArrowWrapper = styled.div<styleProps>`
     }};
 `
 
-const Indicator: React.FC<propTypes> = ({ number }) => {
+export const Indicator: React.FC<propTypes> = ({ number }) => {
     const isAboveZero = number >= 0
     const isEqualZero = number === 0
 
@@ -61,4 +61,31 @@ const Indicator: React.FC<propTypes> = ({ number }) => {
     )
 }
 
-export default Indicator
+type numberPropTypes = {
+    number: number
+    type: "currency" | "percent"
+    size?: "small" | "big"
+}
+
+export const NumberIndicatior: React.FC<numberPropTypes> = ({
+    number,
+    type,
+    size = "big",
+}) => {
+    const isAboveZero = number >= 0
+    const isEqualZero = number === 0
+
+    const color = isEqualZero ? "black" : isAboveZero ? "green" : "red"
+    const sign = isEqualZero ? "" : isAboveZero ? "+" : "-"
+    number = Math.abs(number)
+
+    const format = type === "percent" ? getPercent : getDoubleCurrency
+    const ChoosenText = size === "big" ? Text : SmallText
+
+    return (
+        <ChoosenText $color={color}>
+            {sign}
+            {format(number)}
+        </ChoosenText>
+    )
+}

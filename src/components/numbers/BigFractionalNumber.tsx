@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { getFractionalPart, getIntegerPart } from "./Helper"
+import { getFractionalPart, getIntegerPart } from "helpers/financeHelpers"
 
 type propTypes = {
     color?: "primary" | "green" | "red" | "black" | "dependingOnSign"

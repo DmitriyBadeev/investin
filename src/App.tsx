@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { ThemeProvider } from "styled-components"
-import { ConfigProvider } from "antd"
+import { ConfigProvider, Spin } from "antd"
 import ru_RU from "antd/es/locale/ru_RU"
 import { BrowserRouter } from "react-router-dom"
 import Shared from "pages/shared/Shared"
@@ -9,8 +9,10 @@ import ApolloClient from "apollo-boost"
 import { ApolloProvider } from "@apollo/react-hooks"
 import { observer } from "mobx-react"
 import useStore from "store/useStore"
+import { LoadingOutlined } from "@ant-design/icons"
 
 import "./index.css"
+Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 32 }} spin />)
 
 const client = new ApolloClient({
     uri: "https://finance.badeev.info/graphql?",

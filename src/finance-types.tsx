@@ -22,12 +22,15 @@ export type Scalars = {
 
 export type Queries = {
   __typename?: 'Queries';
+  aggregateBonds?: Maybe<Array<Maybe<BondReport>>>;
+  aggregateFonds?: Maybe<Array<Maybe<FondReport>>>;
   aggregateInvestSum: Scalars['Int'];
   aggregatePortfolioCost?: Maybe<OperationResultOfInt32>;
   aggregatePortfolioCostWithInvestSum?: Maybe<OperationResultOfCostWithInvestSum>;
   aggregatePortfolioPaperProfit?: Maybe<OperationResultOfValuePercent>;
   aggregatePortfolioPaymentProfit?: Maybe<OperationResultOfValuePercent>;
   aggregatePortfolioPayments?: Maybe<OperationResultOfListOfPayment>;
+  aggregateStocks?: Maybe<Array<Maybe<StockReport>>>;
   allAssetOperations?: Maybe<Array<Maybe<AssetOperation>>>;
   allAssetPricesReport?: Maybe<AssetPricesReport>;
   allCurrencyOperations?: Maybe<Array<Maybe<CurrencyOperation>>>;
@@ -48,6 +51,16 @@ export type Queries = {
   stockCandles?: Maybe<Array<Maybe<StockCandle>>>;
   stockReports?: Maybe<Array<Maybe<StockReport>>>;
   test?: Maybe<Scalars['String']>;
+};
+
+
+export type QueriesAggregateBondsArgs = {
+  portfolioIds?: Maybe<Array<Scalars['Int']>>;
+};
+
+
+export type QueriesAggregateFondsArgs = {
+  portfolioIds?: Maybe<Array<Scalars['Int']>>;
 };
 
 
@@ -77,6 +90,11 @@ export type QueriesAggregatePortfolioPaymentProfitArgs = {
 
 
 export type QueriesAggregatePortfolioPaymentsArgs = {
+  portfolioIds?: Maybe<Array<Scalars['Int']>>;
+};
+
+
+export type QueriesAggregateStocksArgs = {
   portfolioIds?: Maybe<Array<Scalars['Int']>>;
 };
 
@@ -237,17 +255,6 @@ export type OperationResultOfCostWithInvestSum = {
   result?: Maybe<CostWithInvestSum>;
 };
 
-export type AllPortfoliosReport = {
-  __typename?: 'AllPortfoliosReport';
-  allCost: Scalars['Float'];
-  allInvestSum: Scalars['Float'];
-  allPaperProfit: Scalars['Float'];
-  allPaperProfitPercent: Scalars['Float'];
-  allPaymentProfit: Scalars['Float'];
-  allPaymentProfitPercent: Scalars['Float'];
-  allUserBalance: Scalars['Float'];
-};
-
 export type StockReport = {
   __typename?: 'StockReport';
   allPrice: Scalars['Float'];
@@ -294,6 +301,17 @@ export type BondReport = {
   priceChange: Scalars['Float'];
   ticket?: Maybe<Scalars['String']>;
   updateTime?: Maybe<Scalars['String']>;
+};
+
+export type AllPortfoliosReport = {
+  __typename?: 'AllPortfoliosReport';
+  allCost: Scalars['Float'];
+  allInvestSum: Scalars['Float'];
+  allPaperProfit: Scalars['Float'];
+  allPaperProfitPercent: Scalars['Float'];
+  allPaymentProfit: Scalars['Float'];
+  allPaymentProfitPercent: Scalars['Float'];
+  allUserBalance: Scalars['Float'];
 };
 
 export type AssetPricesReport = {
@@ -556,6 +574,53 @@ export type PortfoliosQuery = (
   )>>> }
 );
 
+export type StockReportsQueryVariables = Exact<{
+  portfolioIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type StockReportsQuery = (
+  { __typename?: 'Queries' }
+  & { aggregateStocks?: Maybe<Array<Maybe<(
+    { __typename?: 'StockReport' }
+    & Pick<StockReport, 'name' | 'ticket' | 'amount' | 'price' | 'priceChange' | 'allPrice' | 'boughtPrice' | 'paperProfit' | 'paperProfitPercent' | 'paidDividends' | 'updateTime'>
+    & { nearestDividend?: Maybe<(
+      { __typename?: 'PaymentData' }
+      & Pick<PaymentData, 'currencyId' | 'paymentValue' | 'allPayment' | 'registryCloseDate'>
+    )> }
+  )>>> }
+);
+
+export type FondReportsQueryVariables = Exact<{
+  portfolioIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type FondReportsQuery = (
+  { __typename?: 'Queries' }
+  & { aggregateFonds?: Maybe<Array<Maybe<(
+    { __typename?: 'FondReport' }
+    & Pick<FondReport, 'name' | 'ticket' | 'amount' | 'price' | 'priceChange' | 'allPrice' | 'boughtPrice' | 'paperProfit' | 'paperProfitPercent' | 'updateTime'>
+  )>>> }
+);
+
+export type BondReportsQueryVariables = Exact<{
+  portfolioIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type BondReportsQuery = (
+  { __typename?: 'Queries' }
+  & { aggregateBonds?: Maybe<Array<Maybe<(
+    { __typename?: 'BondReport' }
+    & Pick<BondReport, 'name' | 'ticket' | 'amount' | 'price' | 'priceChange' | 'allPrice' | 'boughtPrice' | 'paperProfit' | 'paperProfitPercent' | 'paidPayments' | 'updateTime' | 'amortizationDate' | 'hasAmortized'>
+    & { nearestPayment?: Maybe<(
+      { __typename?: 'PaymentData' }
+      & Pick<PaymentData, 'currencyId' | 'paymentValue' | 'allPayment' | 'registryCloseDate'>
+    )> }
+  )>>> }
+);
+
 export type SecretQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -712,6 +777,148 @@ export function usePortfoliosLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type PortfoliosQueryHookResult = ReturnType<typeof usePortfoliosQuery>;
 export type PortfoliosLazyQueryHookResult = ReturnType<typeof usePortfoliosLazyQuery>;
 export type PortfoliosQueryResult = ApolloReactCommon.QueryResult<PortfoliosQuery, PortfoliosQueryVariables>;
+export const StockReportsDocument = gql`
+    query stockReports($portfolioIds: [Int!]) {
+  aggregateStocks(portfolioIds: $portfolioIds) {
+    name
+    ticket
+    amount
+    price
+    priceChange
+    allPrice
+    boughtPrice
+    paperProfit
+    paperProfitPercent
+    nearestDividend {
+      currencyId
+      paymentValue
+      allPayment
+      registryCloseDate
+    }
+    paidDividends
+    updateTime
+  }
+}
+    `;
+
+/**
+ * __useStockReportsQuery__
+ *
+ * To run a query within a React component, call `useStockReportsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStockReportsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStockReportsQuery({
+ *   variables: {
+ *      portfolioIds: // value for 'portfolioIds'
+ *   },
+ * });
+ */
+export function useStockReportsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<StockReportsQuery, StockReportsQueryVariables>) {
+        return ApolloReactHooks.useQuery<StockReportsQuery, StockReportsQueryVariables>(StockReportsDocument, baseOptions);
+      }
+export function useStockReportsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<StockReportsQuery, StockReportsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<StockReportsQuery, StockReportsQueryVariables>(StockReportsDocument, baseOptions);
+        }
+export type StockReportsQueryHookResult = ReturnType<typeof useStockReportsQuery>;
+export type StockReportsLazyQueryHookResult = ReturnType<typeof useStockReportsLazyQuery>;
+export type StockReportsQueryResult = ApolloReactCommon.QueryResult<StockReportsQuery, StockReportsQueryVariables>;
+export const FondReportsDocument = gql`
+    query fondReports($portfolioIds: [Int!]) {
+  aggregateFonds(portfolioIds: $portfolioIds) {
+    name
+    ticket
+    amount
+    price
+    priceChange
+    allPrice
+    boughtPrice
+    paperProfit
+    paperProfitPercent
+    updateTime
+  }
+}
+    `;
+
+/**
+ * __useFondReportsQuery__
+ *
+ * To run a query within a React component, call `useFondReportsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFondReportsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFondReportsQuery({
+ *   variables: {
+ *      portfolioIds: // value for 'portfolioIds'
+ *   },
+ * });
+ */
+export function useFondReportsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FondReportsQuery, FondReportsQueryVariables>) {
+        return ApolloReactHooks.useQuery<FondReportsQuery, FondReportsQueryVariables>(FondReportsDocument, baseOptions);
+      }
+export function useFondReportsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FondReportsQuery, FondReportsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<FondReportsQuery, FondReportsQueryVariables>(FondReportsDocument, baseOptions);
+        }
+export type FondReportsQueryHookResult = ReturnType<typeof useFondReportsQuery>;
+export type FondReportsLazyQueryHookResult = ReturnType<typeof useFondReportsLazyQuery>;
+export type FondReportsQueryResult = ApolloReactCommon.QueryResult<FondReportsQuery, FondReportsQueryVariables>;
+export const BondReportsDocument = gql`
+    query bondReports($portfolioIds: [Int!]) {
+  aggregateBonds(portfolioIds: $portfolioIds) {
+    name
+    ticket
+    amount
+    price
+    priceChange
+    allPrice
+    boughtPrice
+    paperProfit
+    paperProfitPercent
+    nearestPayment {
+      currencyId
+      paymentValue
+      allPayment
+      registryCloseDate
+    }
+    paidPayments
+    updateTime
+    amortizationDate
+    hasAmortized
+  }
+}
+    `;
+
+/**
+ * __useBondReportsQuery__
+ *
+ * To run a query within a React component, call `useBondReportsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBondReportsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBondReportsQuery({
+ *   variables: {
+ *      portfolioIds: // value for 'portfolioIds'
+ *   },
+ * });
+ */
+export function useBondReportsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<BondReportsQuery, BondReportsQueryVariables>) {
+        return ApolloReactHooks.useQuery<BondReportsQuery, BondReportsQueryVariables>(BondReportsDocument, baseOptions);
+      }
+export function useBondReportsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<BondReportsQuery, BondReportsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<BondReportsQuery, BondReportsQueryVariables>(BondReportsDocument, baseOptions);
+        }
+export type BondReportsQueryHookResult = ReturnType<typeof useBondReportsQuery>;
+export type BondReportsLazyQueryHookResult = ReturnType<typeof useBondReportsLazyQuery>;
+export type BondReportsQueryResult = ApolloReactCommon.QueryResult<BondReportsQuery, BondReportsQueryVariables>;
 export const SecretDocument = gql`
     query Secret {
   secretData

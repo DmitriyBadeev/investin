@@ -1,6 +1,6 @@
 import { Col, message } from "antd"
 import BigFractionalNumber from "components/numbers/BigFractionalNumber"
-import Indicator from "components/numbers/Indicator"
+import { Indicator } from "components/numbers/Indicator"
 import React, { useEffect } from "react"
 import Card from "./Card"
 import { useAggregatePortfolioPaymentProfitLazyQuery } from "finance-types"
@@ -42,7 +42,6 @@ const DividendProfit: React.FC<propTypes> = (props) => {
     if (data?.aggregatePortfolioPaymentProfit && !isSuccess) {
         message.error(apiMessage)
     }
-    console.log(data?.aggregatePortfolioPaymentProfit?.message)
 
     return (
         <Col span={5}>

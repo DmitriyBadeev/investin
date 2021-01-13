@@ -1,0 +1,60 @@
+query stockReports($portfolioIds: [Int!]) {
+    aggregateStocks(portfolioIds: $portfolioIds) {
+        name
+        ticket
+        amount
+        price
+        priceChange
+        allPrice
+        boughtPrice
+        paperProfit
+        paperProfitPercent
+        nearestDividend {
+            currencyId
+            paymentValue
+            allPayment
+            registryCloseDate
+        }
+        paidDividends
+        updateTime
+    }
+}
+
+query fondReports($portfolioIds: [Int!]) {
+    aggregateFonds(portfolioIds: $portfolioIds) {
+        name
+        ticket
+        amount
+        price
+        priceChange
+        allPrice
+        boughtPrice
+        paperProfit
+        paperProfitPercent
+        updateTime
+    }
+}
+
+query bondReports($portfolioIds: [Int!]) {
+    aggregateBonds(portfolioIds: $portfolioIds) {
+        name
+        ticket
+        amount
+        price
+        priceChange
+        allPrice
+        boughtPrice
+        paperProfit
+        paperProfitPercent
+        nearestPayment {
+            currencyId
+            paymentValue
+            allPayment
+            registryCloseDate
+        }
+        paidPayments
+        updateTime
+        amortizationDate
+        hasAmortized
+    }
+}

@@ -46,16 +46,13 @@ const IconWrapper = styled.div<activeProp>`
 type propTypes = mainProps & activeProp
 
 const NavItem: React.FC<propTypes> = (props) => {
+    const color = props.active ? "primary" : "grey2"
+
     return (
         <Link to={props.link} onClick={() => props.onClick && props.onClick()}>
             <ItemWrapper active={props.active}>
                 <IconWrapper active={props.active}>{props.icon}</IconWrapper>
-                <SmallText
-                    $isPrimaryColor={props.active}
-                    $isGrey={!props.active}
-                >
-                    {props.children}
-                </SmallText>
+                <SmallText $color={color}>{props.children}</SmallText>
             </ItemWrapper>
         </Link>
     )

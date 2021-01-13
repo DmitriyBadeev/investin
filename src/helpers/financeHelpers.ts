@@ -21,6 +21,13 @@ export const getCurrency = (number: number) => {
     )}${NON_BREAKING_SPACE}₽`
 }
 
+export const getDoubleCurrency = (number: number) => {
+    return number.toLocaleString("ru-RU", {
+        style: "currency",
+        currency: "RUB",
+    })
+}
+
 export const getPercent = (percent: number) => {
     return `${percent.toLocaleString("ru")}${NON_BREAKING_SPACE}%`
 }

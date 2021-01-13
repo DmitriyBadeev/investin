@@ -1,51 +1,63 @@
-import styled from "styled-components"
+import styled, { ThemedStyledProps } from "styled-components"
 import { Typography } from "antd"
 
 const { Text: AntText } = Typography
 
 type TextProps = {
-    $isPrimaryColor?: boolean
-    $isGrey?: boolean
+    $color?: "primary" | "grey2" | "black" | "red" | "green"
 }
 
 export const SmallText = styled(AntText)<TextProps>`
     font-size: 12px;
-    color: ${(props) => {
-        if (props.$isPrimaryColor) {
-            return props.theme.primary
-        }
-
-        if (props.$isGrey) {
-            return props.theme.grey2
-        }
-
-        return props.theme.black
-    }};
+    color: ${chooseColor};
 `
 
 export const Text = styled(AntText)<TextProps>`
     font-size: 15px;
-    color: ${(props) => {
-        if (props.$isPrimaryColor) {
-            return props.theme.primary
-        }
-
-        if (props.$isGrey) {
-            return props.theme.grey2
-        }
-
-        return props.theme.black
-    }};
+    color: ${chooseColor};
 `
 
-export const H3 = styled.h3`
+export const H3 = styled.h3<TextProps>`
     font-size: 25px;
     font-weight: 600;
     color: ${(props) => props.theme.black};
     font-family: "Open Sans", sans-serif;
+    color: ${chooseColor};
+`
+
+export const H4 = styled.h4<TextProps>`
+    font-size: 20px;
+    font-weight: 600;
+    color: ${(props) => props.theme.black};
+    font-family: "Open Sans", sans-serif;
+    color: ${chooseColor};
 `
 
 export const FlexCenter = styled.div`
     display: flex;
     justify-content: center;
 `
+
+function chooseColor(
+    props: ThemedStyledProps<
+        TextProps & {
+            children?: React.ReactNode
+        } & TextProps,
+        any
+    >
+) {
+    switch (props.$color) {
+        case "primary":
+            return props.theme.primary
+        case "grey2":
+            return props.theme.grey2
+        case "black":
+            return props.theme.black
+        case "red":
+            return props.theme.red
+        case "green":
+            return props.theme.green
+        default:
+            return props.theme.black
+    }
+}
