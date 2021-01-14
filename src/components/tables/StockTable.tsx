@@ -75,14 +75,14 @@ const stockColumns = [
         sorter: (a: any, b: any) => a.price - b.price,
         render: (_items: any, item: any) => {
             return (
-                <>
+                <Tooltip title={`Время обновления: ${item.updateTime}`}>
                     <Text>{getDoubleCurrency(item.price)}</Text> <br />
                     <NumberIndicatior
                         number={item.priceChange}
                         type="percent"
                         size="small"
                     />
-                </>
+                </Tooltip>
             )
         },
     },
@@ -158,11 +158,5 @@ const stockColumns = [
                 return getDoubleCurrency(item.paidDividends)
             }
         },
-    },
-    {
-        key: "updateTime",
-        title: "Время",
-        width: 130,
-        dataIndex: "updateTime",
     },
 ]

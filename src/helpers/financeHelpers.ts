@@ -15,10 +15,10 @@ export const getFractionalPart = (number: number) => {
     return `${secondDigit}${lastDigit}`
 }
 
-export const getCurrency = (number: number) => {
+export const getCurrency = (number: number, currency: string = "₽") => {
     return `${getIntegerPart(number)},${getFractionalPart(
         number
-    )}${NON_BREAKING_SPACE}₽`
+    )}${NON_BREAKING_SPACE}${currency}`
 }
 
 export const getDoubleCurrency = (number: number) => {

@@ -21,7 +21,7 @@ const PortfolioSelector: React.FC = observer(() => {
     const { data, loading, error } = usePortfoliosQuery()
     const { portfolioStore } = useStore()
 
-    if (loading) return <Loading />
+    if (loading) return <Loading height="50px" />
     if (error) message.error(error.message)
 
     const portfolios =

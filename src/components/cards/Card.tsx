@@ -8,13 +8,17 @@ const Wrapper = styled.div`
     border-radius: 3px;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
     height: 100%;
+    display: flex;
+    flex-direction: column;
 `
 
 const Title = styled(Text)`
     color: ${(props) => props.theme.grey1};
 `
 
-const Content = styled.div``
+const Content = styled.div`
+    flex: 1 0;
+`
 
 type propTypes = {
     title: string | React.ReactNode

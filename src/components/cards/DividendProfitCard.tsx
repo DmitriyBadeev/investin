@@ -10,7 +10,7 @@ type propTypes = {
     portfolios: number[]
 }
 
-const DividendProfit: React.FC<propTypes> = (props) => {
+const DividendProfitCard: React.FC<propTypes> = (props) => {
     const [
         query,
         { data, loading, error },
@@ -57,4 +57,4 @@ const DividendProfit: React.FC<propTypes> = (props) => {
     )
 }
 
-export default DividendProfit
+export default DividendProfitCard

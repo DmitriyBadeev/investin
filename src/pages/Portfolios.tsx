@@ -1,13 +1,13 @@
 import React from "react"
 import { H3 } from "GeneralStyles"
 import FadePage from "components/fade/FadePage"
-import { Col, Row } from "antd"
+import { Row } from "antd"
 import PortfolioSelector from "components/portfolios/PortfolioSelector"
-import Card from "components/cards/Card"
 import styled from "styled-components"
-import DividendProfit from "components/cards/DividendProfit"
+import DividendProfitCard from "components/cards/DividendProfitCard"
+import BalanceCard from "components/cards/BalanceCard"
 import PaperProfitCard from "components/cards/PaperProfitCard"
-import CostWithInvestSum from "components/cards/CostWithInvestSum"
+import CostWithInvestSumCard from "components/cards/CostWithInvestSumCard"
 import { observer } from "mobx-react"
 import useStore from "store/useStore"
 import StockTable from "components/tables/StockTable"
@@ -28,13 +28,11 @@ const Portfolios: React.FC = observer(() => {
                 <H3>Портфели</H3>
             </Row>
             <PortfolioSelector />
-            <Content gutter={[20, 20]}>
-                <CostWithInvestSum portfolios={portfolios} />
+            <Content gutter={[20, 20]} hidden={portfolios.length === 0}>
+                <CostWithInvestSumCard portfolios={portfolios} />
                 <PaperProfitCard portfolios={portfolios} />
-                <DividendProfit portfolios={portfolios} />
-                <Col span={9}>
-                    <Card title="Свободных средств"></Card>
-                </Col>
+                <DividendProfitCard portfolios={portfolios} />
+                <BalanceCard portfolios={portfolios} />
                 <StockTable portfolios={portfolios} />
                 <FondTable portfolios={portfolios} />
                 <BondTable portfolios={portfolios} />

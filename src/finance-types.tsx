@@ -22,6 +22,7 @@ export type Scalars = {
 
 export type Queries = {
   __typename?: 'Queries';
+  aggregateBalance?: Maybe<OperationResultOfInt32>;
   aggregateBonds?: Maybe<Array<Maybe<BondReport>>>;
   aggregateFonds?: Maybe<Array<Maybe<FondReport>>>;
   aggregateInvestSum: Scalars['Int'];
@@ -41,7 +42,6 @@ export type Queries = {
   assetTypes?: Maybe<Array<Maybe<AssetType>>>;
   bondReports?: Maybe<Array<Maybe<BondReport>>>;
   currencyActions?: Maybe<Array<Maybe<CurrencyAction>>>;
-  currentUserBalance: Scalars['Float'];
   fondReports?: Maybe<Array<Maybe<FondReport>>>;
   marketQuotes?: Maybe<Array<Maybe<CommonMarketQuote>>>;
   portfolioPayments?: Maybe<OperationResultOfListOfPayment>;
@@ -51,6 +51,11 @@ export type Queries = {
   stockCandles?: Maybe<Array<Maybe<StockCandle>>>;
   stockReports?: Maybe<Array<Maybe<StockReport>>>;
   test?: Maybe<Scalars['String']>;
+};
+
+
+export type QueriesAggregateBalanceArgs = {
+  portfolioIds?: Maybe<Array<Scalars['Int']>>;
 };
 
 
@@ -563,6 +568,19 @@ export type AggregatePortfolioCostWithInvestSumQuery = (
   )> }
 );
 
+export type AggregateBalanceQueryVariables = Exact<{
+  portfolioIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type AggregateBalanceQuery = (
+  { __typename?: 'Queries' }
+  & { aggregateBalance?: Maybe<(
+    { __typename?: 'OperationResultOfInt32' }
+    & Pick<OperationResultOfInt32, 'isSuccess' | 'message' | 'result'>
+  )> }
+);
+
 export type PortfoliosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -744,6 +762,41 @@ export function useAggregatePortfolioCostWithInvestSumLazyQuery(baseOptions?: Ap
 export type AggregatePortfolioCostWithInvestSumQueryHookResult = ReturnType<typeof useAggregatePortfolioCostWithInvestSumQuery>;
 export type AggregatePortfolioCostWithInvestSumLazyQueryHookResult = ReturnType<typeof useAggregatePortfolioCostWithInvestSumLazyQuery>;
 export type AggregatePortfolioCostWithInvestSumQueryResult = ApolloReactCommon.QueryResult<AggregatePortfolioCostWithInvestSumQuery, AggregatePortfolioCostWithInvestSumQueryVariables>;
+export const AggregateBalanceDocument = gql`
+    query aggregateBalance($portfolioIds: [Int!]) {
+  aggregateBalance(portfolioIds: $portfolioIds) {
+    isSuccess
+    message
+    result
+  }
+}
+    `;
+
+/**
+ * __useAggregateBalanceQuery__
+ *
+ * To run a query within a React component, call `useAggregateBalanceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAggregateBalanceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAggregateBalanceQuery({
+ *   variables: {
+ *      portfolioIds: // value for 'portfolioIds'
+ *   },
+ * });
+ */
+export function useAggregateBalanceQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AggregateBalanceQuery, AggregateBalanceQueryVariables>) {
+        return ApolloReactHooks.useQuery<AggregateBalanceQuery, AggregateBalanceQueryVariables>(AggregateBalanceDocument, baseOptions);
+      }
+export function useAggregateBalanceLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AggregateBalanceQuery, AggregateBalanceQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AggregateBalanceQuery, AggregateBalanceQueryVariables>(AggregateBalanceDocument, baseOptions);
+        }
+export type AggregateBalanceQueryHookResult = ReturnType<typeof useAggregateBalanceQuery>;
+export type AggregateBalanceLazyQueryHookResult = ReturnType<typeof useAggregateBalanceLazyQuery>;
+export type AggregateBalanceQueryResult = ApolloReactCommon.QueryResult<AggregateBalanceQuery, AggregateBalanceQueryVariables>;
 export const PortfoliosDocument = gql`
     query portfolios {
   portfolios {

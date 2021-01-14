@@ -5,16 +5,19 @@ const { Text: AntText } = Typography
 
 type TextProps = {
     $color?: "primary" | "grey2" | "black" | "red" | "green"
+    $bold?: boolean
 }
 
 export const SmallText = styled(AntText)<TextProps>`
     font-size: 12px;
     color: ${chooseColor};
+    font-weight: ${(props) => (props.$bold ? 600 : 400)};
 `
 
-export const Text = styled(AntText)<TextProps>`
-    font-size: 15px;
+export const Text = styled(AntText)<TextProps & { $large?: boolean }>`
+    font-size: ${(props) => (props.$large ? "18px" : "15px")};
     color: ${chooseColor};
+    font-weight: ${(props) => (props.$bold ? 600 : 400)};
 `
 
 export const H3 = styled.h3<TextProps>`

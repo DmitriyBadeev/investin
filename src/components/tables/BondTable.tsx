@@ -75,14 +75,14 @@ const bondColumns = [
         sorter: (a: any, b: any) => a.price - b.price,
         render: (_items: any, item: any) => {
             return (
-                <>
+                <Tooltip title={`Время обновления: ${item.updateTime}`}>
                     <Text>{getPercent(item.price)}</Text> <br />
                     <NumberIndicatior
                         number={item.priceChange}
                         type="percent"
                         size="small"
                     />
-                </>
+                </Tooltip>
             )
         },
     },
@@ -163,11 +163,5 @@ const bondColumns = [
                 return getDoubleCurrency(item.paidPayments)
             }
         },
-    },
-    {
-        key: "updateTime",
-        title: "Время",
-        width: 130,
-        dataIndex: "updateTime",
     },
 ]

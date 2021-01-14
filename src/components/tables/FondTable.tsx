@@ -1,4 +1,4 @@
-import { Col, message, Table } from "antd"
+import { Col, message, Table, Tooltip } from "antd"
 import { H4, Text, SmallText } from "GeneralStyles"
 import Card from "components/cards/Card"
 import React, { useEffect } from "react"
@@ -74,14 +74,14 @@ const fondColumns = [
         sorter: (a: any, b: any) => a.price - b.price,
         render: (_items: any, item: any) => {
             return (
-                <>
+                <Tooltip title={`Время обновления: ${item.updateTime}`}>
                     <Text>{getDoubleCurrency(item.price)}</Text> <br />
                     <NumberIndicatior
                         number={item.priceChange}
                         type="percent"
                         size="small"
                     />
-                </>
+                </Tooltip>
             )
         },
     },
@@ -124,11 +124,5 @@ const fondColumns = [
                 </>
             )
         },
-    },
-    {
-        key: "updateTime",
-        title: "Время",
-        width: 130,
-        dataIndex: "updateTime",
     },
 ]

@@ -11,7 +11,7 @@ type propTypes = {
     portfolios: number[]
 }
 
-const CostWithInvestSum: React.FC<propTypes> = (props) => {
+const CostWithInvestSumCard: React.FC<propTypes> = (props) => {
     const [
         query,
         { data, loading, error },
@@ -57,4 +57,4 @@ const CostWithInvestSum: React.FC<propTypes> = (props) => {
     )
 }
 
-export default CostWithInvestSum
+export default CostWithInvestSumCard

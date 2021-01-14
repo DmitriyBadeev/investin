@@ -18,6 +18,7 @@ const ItemWrapper = styled.div<activeProp>`
     margin: 10px 0;
     position: relative;
     transition: all ${(props) => props.theme.baseTransition};
+    border-radius: 3px;
     &:hover {
         background: ${(props) => props.theme.grey5};
     }
