@@ -4,6 +4,7 @@ import styled from "styled-components"
 const LogoWrapper = styled.div`
     font-size: 16px;
     font-weight: 600;
+    color: ${(props) => props.theme.black};
 `
 
 const LogoBackground = styled.span`
