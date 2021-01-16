@@ -3,6 +3,7 @@ import { observable, action } from "mobx"
 export type portfolioDataType = {
     id: number
     name: string
+    iconUrl: string
 }
 
 export class PortfolioStore {

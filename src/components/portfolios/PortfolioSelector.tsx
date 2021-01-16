@@ -7,8 +7,6 @@ import useStore from "store/useStore"
 import { usePortfoliosQuery } from "finance-types"
 import Loading from "components/loading/Loading"
 import { message } from "antd"
-import img1 from "./sber.png"
-import img2 from "./tin.png"
 import { computed } from "mobx"
 
 const SelectorWrapper = styled.div`
@@ -28,6 +26,7 @@ const PortfolioSelector: React.FC = observer(() => {
         data?.portfolios?.map((p) => ({
             id: p?.id || 0,
             name: p?.name || "",
+            iconUrl: p?.portfolioType?.iconUrl || "",
         })) || []
 
     portfolioStore.updatePortfolios(portfolios)
@@ -39,13 +38,13 @@ const PortfolioSelector: React.FC = observer(() => {
     return (
         <SelectorWrapper>
             <Row>
-                {portfolioStore.portfolios.map((portfolio, index) => (
+                {portfolioStore.portfolios.map((portfolio) => (
                     <Col span={6} key={portfolio.id}>
                         <PortfolioCard
                             active={computed(() =>
                                 portfolioStore.isActive(portfolio.id)
                             ).get()}
-                            img={index === 0 ? img1 : img2}
+                            img={portfolio.iconUrl}
                             id={portfolio.id}
                             onSelect={onSelect}
                         >

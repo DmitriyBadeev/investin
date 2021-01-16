@@ -176,6 +176,7 @@ export type MutationsBuyAssetArgs = {
 
 export type MutationsCreatePortfolioArgs = {
   name?: Maybe<Scalars['String']>;
+  portfolioType: Scalars['Int'];
 };
 
 
@@ -229,7 +230,9 @@ export type Portfolio = {
   id: Scalars['Int'];
   name?: Maybe<Scalars['String']>;
   payments?: Maybe<Array<Maybe<Payment>>>;
-  userId: Scalars['Int'];
+  portfolioType?: Maybe<PortfolioType>;
+  portfolioTypeId?: Maybe<Scalars['Int']>;
+  userId?: Maybe<Scalars['String']>;
 };
 
 export type OperationResultOfListOfPayment = {
@@ -483,6 +486,14 @@ export type WithdrawalBalanceInput = {
   price: Scalars['Int'];
 };
 
+export type PortfolioType = {
+  __typename?: 'PortfolioType';
+  iconUrl?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  name?: Maybe<Scalars['String']>;
+  portfolios?: Maybe<Array<Maybe<Portfolio>>>;
+};
+
 export type Payment = {
   __typename?: 'Payment';
   amount: Scalars['Int'];
@@ -589,6 +600,10 @@ export type PortfoliosQuery = (
   & { portfolios?: Maybe<Array<Maybe<(
     { __typename?: 'Portfolio' }
     & Pick<Portfolio, 'id' | 'name'>
+    & { portfolioType?: Maybe<(
+      { __typename?: 'PortfolioType' }
+      & Pick<PortfolioType, 'iconUrl'>
+    )> }
   )>>> }
 );
 
@@ -802,6 +817,9 @@ export const PortfoliosDocument = gql`
   portfolios {
     id
     name
+    portfolioType {
+      iconUrl
+    }
   }
 }
     `;
