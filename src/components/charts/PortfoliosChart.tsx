@@ -80,16 +80,9 @@ const PortfoliosChart: React.FC<propTypes> = (props) => {
     const preparedData =
         data?.portfolioCostGraph?.map((valueTime) => {
             const value = (valueTime?.value || 0) / 100
-            console.log(value, valueTime?.date, new Date(valueTime?.date))
 
             return [valueTime?.date || 0, value]
         }) || []
-
-    console.log([
-        ...preparedData,
-        [1611006600000, 64460.48],
-        [1611008600000, 61460.48],
-    ])
 
     return (
         <Col span={15}>
@@ -97,11 +90,7 @@ const PortfoliosChart: React.FC<propTypes> = (props) => {
                 <HighchartsReact
                     highcharts={Highcharts}
                     options={areaOptions(
-                        [
-                            ...preparedData,
-                            [1611006600000, 64460.48],
-                            [1611008600000, 61460.48],
-                        ],
+                        preparedData,
                         `Портфель с id=${props.portfolios[0]}`
                     )}
                     constructorType="stockChart"
