@@ -16,6 +16,8 @@ export type Scalars = {
   MultiplierPath: any;
   /** The `DateTime` scalar represents an ISO-8601 compliant date time type. */
   DateTime: any;
+  /** The `Long` scalar type represents non-fractional signed whole 64-bit numeric values. Long can represent values between -(2^63) and 2^63 - 1. */
+  Long: any;
 };
 
 
@@ -44,6 +46,7 @@ export type Queries = {
   currencyActions?: Maybe<Array<Maybe<CurrencyAction>>>;
   fondReports?: Maybe<Array<Maybe<FondReport>>>;
   marketQuotes?: Maybe<Array<Maybe<CommonMarketQuote>>>;
+  portfolioCostGraph?: Maybe<Array<Maybe<TimeValue>>>;
   portfolioPayments?: Maybe<OperationResultOfListOfPayment>;
   portfolios?: Maybe<Array<Maybe<Portfolio>>>;
   searchAsset?: Maybe<SearchData>;
@@ -125,6 +128,11 @@ export type QueriesBondReportsArgs = {
 
 
 export type QueriesFondReportsArgs = {
+  portfolioId: Scalars['Int'];
+};
+
+
+export type QueriesPortfolioCostGraphArgs = {
   portfolioId: Scalars['Int'];
 };
 
@@ -227,6 +235,7 @@ export type SubscriptionsOnUpdateStockReportsArgs = {
 export type Portfolio = {
   __typename?: 'Portfolio';
   assetOperations?: Maybe<Array<Maybe<AssetOperation>>>;
+  dailyPortfolioReports?: Maybe<Array<Maybe<DailyPortfolioReport>>>;
   id: Scalars['Int'];
   name?: Maybe<Scalars['String']>;
   payments?: Maybe<Array<Maybe<Payment>>>;
@@ -442,6 +451,12 @@ export enum CandleInterval {
   Hour = 'HOUR'
 }
 
+export type TimeValue = {
+  __typename?: 'TimeValue';
+  date: Scalars['Long'];
+  value: Scalars['Int'];
+};
+
 export type OperationResult = {
   __typename?: 'OperationResult';
   isSuccess: Scalars['Boolean'];
@@ -505,6 +520,16 @@ export type Payment = {
   ticket?: Maybe<Scalars['String']>;
 };
 
+export type DailyPortfolioReport = {
+  __typename?: 'DailyPortfolioReport';
+  cost: Scalars['Int'];
+  id: Scalars['Int'];
+  portfolio?: Maybe<Portfolio>;
+  portfolioId: Scalars['Int'];
+  profit: Scalars['Int'];
+  time: Scalars['DateTime'];
+};
+
 export type ValuePercent = {
   __typename?: 'ValuePercent';
   percent: Scalars['Float'];
@@ -527,6 +552,7 @@ export type PaymentData = {
   registryCloseDate: Scalars['DateTime'];
   ticket?: Maybe<Scalars['String']>;
 };
+
 
 export type AggregatePortfolioPaymentProfitQueryVariables = Exact<{
   portfolioIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
@@ -590,6 +616,19 @@ export type AggregateBalanceQuery = (
     { __typename?: 'OperationResultOfInt32' }
     & Pick<OperationResultOfInt32, 'isSuccess' | 'message' | 'result'>
   )> }
+);
+
+export type PortfolioCostGraphQueryVariables = Exact<{
+  portfolioId: Scalars['Int'];
+}>;
+
+
+export type PortfolioCostGraphQuery = (
+  { __typename?: 'Queries' }
+  & { portfolioCostGraph?: Maybe<Array<Maybe<(
+    { __typename?: 'TimeValue' }
+    & Pick<TimeValue, 'date' | 'value'>
+  )>>> }
 );
 
 export type PortfoliosQueryVariables = Exact<{ [key: string]: never; }>;
@@ -812,6 +851,40 @@ export function useAggregateBalanceLazyQuery(baseOptions?: ApolloReactHooks.Lazy
 export type AggregateBalanceQueryHookResult = ReturnType<typeof useAggregateBalanceQuery>;
 export type AggregateBalanceLazyQueryHookResult = ReturnType<typeof useAggregateBalanceLazyQuery>;
 export type AggregateBalanceQueryResult = ApolloReactCommon.QueryResult<AggregateBalanceQuery, AggregateBalanceQueryVariables>;
+export const PortfolioCostGraphDocument = gql`
+    query portfolioCostGraph($portfolioId: Int!) {
+  portfolioCostGraph(portfolioId: $portfolioId) {
+    date
+    value
+  }
+}
+    `;
+
+/**
+ * __usePortfolioCostGraphQuery__
+ *
+ * To run a query within a React component, call `usePortfolioCostGraphQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePortfolioCostGraphQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePortfolioCostGraphQuery({
+ *   variables: {
+ *      portfolioId: // value for 'portfolioId'
+ *   },
+ * });
+ */
+export function usePortfolioCostGraphQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PortfolioCostGraphQuery, PortfolioCostGraphQueryVariables>) {
+        return ApolloReactHooks.useQuery<PortfolioCostGraphQuery, PortfolioCostGraphQueryVariables>(PortfolioCostGraphDocument, baseOptions);
+      }
+export function usePortfolioCostGraphLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PortfolioCostGraphQuery, PortfolioCostGraphQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<PortfolioCostGraphQuery, PortfolioCostGraphQueryVariables>(PortfolioCostGraphDocument, baseOptions);
+        }
+export type PortfolioCostGraphQueryHookResult = ReturnType<typeof usePortfolioCostGraphQuery>;
+export type PortfolioCostGraphLazyQueryHookResult = ReturnType<typeof usePortfolioCostGraphLazyQuery>;
+export type PortfolioCostGraphQueryResult = ApolloReactCommon.QueryResult<PortfolioCostGraphQuery, PortfolioCostGraphQueryVariables>;
 export const PortfoliosDocument = gql`
     query portfolios {
   portfolios {

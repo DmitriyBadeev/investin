@@ -1,0 +1,6 @@
+query portfolioCostGraph($portfolioId: Int!) {
+    portfolioCostGraph(portfolioId: $portfolioId) {
+        date
+        value
+    }
+}
