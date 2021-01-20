@@ -8,6 +8,7 @@ export const areaOptions = (data: TData[]) => ({
     chart: {
         type: "area",
         marginTop: 20,
+        height: 430,
     },
 
     rangeSelector: {

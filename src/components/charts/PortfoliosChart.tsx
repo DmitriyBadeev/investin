@@ -72,7 +72,7 @@ const PortfoliosChart: React.FC<propTypes> = (props) => {
         return (
             <Col span={15}>
                 <Card title="Изменение стоимости портфеля">
-                    <Loading height="400px" />
+                    <Loading height="430px" />
                 </Card>
             </Col>
         )

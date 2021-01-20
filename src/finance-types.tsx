@@ -27,6 +27,7 @@ export type Queries = {
   aggregateBalance?: Maybe<OperationResultOfInt32>;
   aggregateBonds?: Maybe<Array<Maybe<BondReport>>>;
   aggregateFonds?: Maybe<Array<Maybe<FondReport>>>;
+  aggregateFuturePayments?: Maybe<OperationResultOfListOfPaymentData>;
   aggregateInvestSum: Scalars['Int'];
   aggregatePortfolioCost?: Maybe<OperationResultOfInt32>;
   aggregatePortfolioCostGraph?: Maybe<Array<Maybe<CostGraphData>>>;
@@ -69,6 +70,11 @@ export type QueriesAggregateBondsArgs = {
 
 
 export type QueriesAggregateFondsArgs = {
+  portfolioIds?: Maybe<Array<Scalars['Int']>>;
+};
+
+
+export type QueriesAggregateFuturePaymentsArgs = {
   portfolioIds?: Maybe<Array<Scalars['Int']>>;
 };
 
@@ -255,6 +261,13 @@ export type OperationResultOfListOfPayment = {
   isSuccess: Scalars['Boolean'];
   message?: Maybe<Scalars['String']>;
   result?: Maybe<Array<Maybe<Payment>>>;
+};
+
+export type OperationResultOfListOfPaymentData = {
+  __typename?: 'OperationResultOfListOfPaymentData';
+  isSuccess: Scalars['Boolean'];
+  message?: Maybe<Scalars['String']>;
+  result?: Maybe<Array<Maybe<PaymentData>>>;
 };
 
 export type OperationResultOfValuePercent = {
@@ -543,6 +556,17 @@ export type DailyPortfolioReport = {
   time: Scalars['DateTime'];
 };
 
+export type PaymentData = {
+  __typename?: 'PaymentData';
+  allPayment: Scalars['Int'];
+  amount: Scalars['Int'];
+  currencyId?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  paymentValue: Scalars['Int'];
+  registryCloseDate: Scalars['DateTime'];
+  ticket?: Maybe<Scalars['String']>;
+};
+
 export type ValuePercent = {
   __typename?: 'ValuePercent';
   percent: Scalars['Float'];
@@ -553,17 +577,6 @@ export type CostWithInvestSum = {
   __typename?: 'CostWithInvestSum';
   cost: Scalars['Int'];
   investSum: Scalars['Int'];
-};
-
-export type PaymentData = {
-  __typename?: 'PaymentData';
-  allPayment: Scalars['Int'];
-  amount: Scalars['Int'];
-  currencyId?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  paymentValue: Scalars['Int'];
-  registryCloseDate: Scalars['DateTime'];
-  ticket?: Maybe<Scalars['String']>;
 };
 
 
@@ -708,6 +721,23 @@ export type BondReportsQuery = (
       & Pick<PaymentData, 'currencyId' | 'paymentValue' | 'allPayment' | 'registryCloseDate'>
     )> }
   )>>> }
+);
+
+export type AggregateFuturePaymentsQueryVariables = Exact<{
+  portfolioIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type AggregateFuturePaymentsQuery = (
+  { __typename?: 'Queries' }
+  & { aggregateFuturePayments?: Maybe<(
+    { __typename?: 'OperationResultOfListOfPaymentData' }
+    & Pick<OperationResultOfListOfPaymentData, 'isSuccess' | 'message'>
+    & { result?: Maybe<Array<Maybe<(
+      { __typename?: 'PaymentData' }
+      & Pick<PaymentData, 'name' | 'ticket' | 'amount' | 'allPayment' | 'paymentValue' | 'registryCloseDate' | 'currencyId'>
+    )>>> }
+  )> }
 );
 
 export type SecretQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1084,6 +1114,49 @@ export function useBondReportsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type BondReportsQueryHookResult = ReturnType<typeof useBondReportsQuery>;
 export type BondReportsLazyQueryHookResult = ReturnType<typeof useBondReportsLazyQuery>;
 export type BondReportsQueryResult = ApolloReactCommon.QueryResult<BondReportsQuery, BondReportsQueryVariables>;
+export const AggregateFuturePaymentsDocument = gql`
+    query aggregateFuturePayments($portfolioIds: [Int!]) {
+  aggregateFuturePayments(portfolioIds: $portfolioIds) {
+    isSuccess
+    message
+    result {
+      name
+      ticket
+      amount
+      allPayment
+      paymentValue
+      registryCloseDate
+      currencyId
+    }
+  }
+}
+    `;
+
+/**
+ * __useAggregateFuturePaymentsQuery__
+ *
+ * To run a query within a React component, call `useAggregateFuturePaymentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAggregateFuturePaymentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAggregateFuturePaymentsQuery({
+ *   variables: {
+ *      portfolioIds: // value for 'portfolioIds'
+ *   },
+ * });
+ */
+export function useAggregateFuturePaymentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AggregateFuturePaymentsQuery, AggregateFuturePaymentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<AggregateFuturePaymentsQuery, AggregateFuturePaymentsQueryVariables>(AggregateFuturePaymentsDocument, baseOptions);
+      }
+export function useAggregateFuturePaymentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AggregateFuturePaymentsQuery, AggregateFuturePaymentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AggregateFuturePaymentsQuery, AggregateFuturePaymentsQueryVariables>(AggregateFuturePaymentsDocument, baseOptions);
+        }
+export type AggregateFuturePaymentsQueryHookResult = ReturnType<typeof useAggregateFuturePaymentsQuery>;
+export type AggregateFuturePaymentsLazyQueryHookResult = ReturnType<typeof useAggregateFuturePaymentsLazyQuery>;
+export type AggregateFuturePaymentsQueryResult = ApolloReactCommon.QueryResult<AggregateFuturePaymentsQuery, AggregateFuturePaymentsQueryVariables>;
 export const SecretDocument = gql`
     query Secret {
   secretData

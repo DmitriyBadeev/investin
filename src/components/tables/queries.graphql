@@ -58,3 +58,19 @@ query bondReports($portfolioIds: [Int!]) {
         hasAmortized
     }
 }
+
+query aggregateFuturePayments($portfolioIds: [Int!]) {
+	  aggregateFuturePayments(portfolioIds: $portfolioIds){
+      isSuccess
+    	message
+    	result {
+        name
+        ticket
+        amount
+        allPayment
+        paymentValue
+        registryCloseDate
+        currencyId
+      }
+    }
+}

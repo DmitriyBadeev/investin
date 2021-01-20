@@ -13,6 +13,7 @@ import useStore from "store/useStore"
 import StockTable from "components/tables/StockTable"
 import FondTable from "components/tables/FondTable"
 import BondTable from "components/tables/BondTable"
+import FuturePaymentsTable from "components/tables/FuturePaymentsTable"
 import PortfoliosChart from "components/charts/PortfoliosChart"
 
 const Content = styled(Row)`
@@ -35,6 +36,7 @@ const Portfolios: React.FC = observer(() => {
                 <DividendProfitCard portfolios={portfolios} />
                 <BalanceCard portfolios={portfolios} />
                 <PortfoliosChart portfolios={portfolios} />
+                <FuturePaymentsTable portfolios={portfolios} />
                 <StockTable portfolios={portfolios} />
                 <FondTable portfolios={portfolios} />
                 <BondTable portfolios={portfolios} />
