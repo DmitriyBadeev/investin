@@ -3,7 +3,7 @@ import { Col, message } from "antd"
 import Card from "components/cards/Card"
 import Highcharts from "highcharts/highstock"
 import HighchartsReact from "highcharts-react-official"
-import { usePortfolioCostGraphLazyQuery } from "finance-types"
+import { useAggregatePortfolioCostGraphLazyQuery } from "finance-types"
 import Loading from "components/loading/Loading"
 import { areaOptions } from "./ChartOptions"
 
@@ -57,11 +57,14 @@ Highcharts.setOptions({
 })
 
 const PortfoliosChart: React.FC<propTypes> = (props) => {
-    const [query, { data, loading, error }] = usePortfolioCostGraphLazyQuery()
+    const [
+        query,
+        { data, loading, error },
+    ] = useAggregatePortfolioCostGraphLazyQuery()
 
     useEffect(() => {
         query({
-            variables: { portfolioId: props.portfolios[0] || 0 },
+            variables: { portfolioIds: props.portfolios },
         })
     }, [query, props.portfolios])
 
@@ -78,10 +81,15 @@ const PortfoliosChart: React.FC<propTypes> = (props) => {
     if (error) message.error(error.message)
 
     const preparedData =
-        data?.portfolioCostGraph?.map((valueTime) => {
-            const value = (valueTime?.value || 0) / 100
-
-            return [valueTime?.date || 0, value]
+        data?.aggregatePortfolioCostGraph?.map((portfolioDatas) => {
+            return {
+                portfolioId: portfolioDatas?.portfolioId,
+                portfolioName: portfolioDatas?.portfolioName,
+                data: portfolioDatas?.data?.map((d) => {
+                    const value = (d?.value || 0) / 100
+                    return [d?.date || 0, value] || []
+                }),
+            }
         }) || []
 
     return (
@@ -89,10 +97,7 @@ const PortfoliosChart: React.FC<propTypes> = (props) => {
             <Card title="Изменение стоимости портфеля">
                 <HighchartsReact
                     highcharts={Highcharts}
-                    options={areaOptions(
-                        preparedData,
-                        `Портфель с id=${props.portfolios[0]}`
-                    )}
+                    options={areaOptions(preparedData)}
                     constructorType="stockChart"
                 />
             </Card>

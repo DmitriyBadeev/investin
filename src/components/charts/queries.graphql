@@ -1,6 +1,10 @@
-query portfolioCostGraph($portfolioId: Int!) {
-    portfolioCostGraph(portfolioId: $portfolioId) {
-        date
-        value
+query aggregatePortfolioCostGraph($portfolioIds: [Int!]) {
+  aggregatePortfolioCostGraph(portfolioIds: $portfolioIds) {
+    portfolioId
+    portfolioName
+    data {
+      date
+      value
     }
+  }
 }

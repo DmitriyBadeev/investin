@@ -29,6 +29,7 @@ export type Queries = {
   aggregateFonds?: Maybe<Array<Maybe<FondReport>>>;
   aggregateInvestSum: Scalars['Int'];
   aggregatePortfolioCost?: Maybe<OperationResultOfInt32>;
+  aggregatePortfolioCostGraph?: Maybe<Array<Maybe<CostGraphData>>>;
   aggregatePortfolioCostWithInvestSum?: Maybe<OperationResultOfCostWithInvestSum>;
   aggregatePortfolioPaperProfit?: Maybe<OperationResultOfValuePercent>;
   aggregatePortfolioPaymentProfit?: Maybe<OperationResultOfValuePercent>;
@@ -78,6 +79,11 @@ export type QueriesAggregateInvestSumArgs = {
 
 
 export type QueriesAggregatePortfolioCostArgs = {
+  portfolioIds?: Maybe<Array<Scalars['Int']>>;
+};
+
+
+export type QueriesAggregatePortfolioCostGraphArgs = {
   portfolioIds?: Maybe<Array<Scalars['Int']>>;
 };
 
@@ -457,6 +463,13 @@ export type TimeValue = {
   value: Scalars['Int'];
 };
 
+export type CostGraphData = {
+  __typename?: 'CostGraphData';
+  data?: Maybe<Array<Maybe<TimeValue>>>;
+  portfolioId: Scalars['Int'];
+  portfolioName?: Maybe<Scalars['String']>;
+};
+
 export type OperationResult = {
   __typename?: 'OperationResult';
   isSuccess: Scalars['Boolean'];
@@ -618,16 +631,20 @@ export type AggregateBalanceQuery = (
   )> }
 );
 
-export type PortfolioCostGraphQueryVariables = Exact<{
-  portfolioId: Scalars['Int'];
+export type AggregatePortfolioCostGraphQueryVariables = Exact<{
+  portfolioIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
 }>;
 
 
-export type PortfolioCostGraphQuery = (
+export type AggregatePortfolioCostGraphQuery = (
   { __typename?: 'Queries' }
-  & { portfolioCostGraph?: Maybe<Array<Maybe<(
-    { __typename?: 'TimeValue' }
-    & Pick<TimeValue, 'date' | 'value'>
+  & { aggregatePortfolioCostGraph?: Maybe<Array<Maybe<(
+    { __typename?: 'CostGraphData' }
+    & Pick<CostGraphData, 'portfolioId' | 'portfolioName'>
+    & { data?: Maybe<Array<Maybe<(
+      { __typename?: 'TimeValue' }
+      & Pick<TimeValue, 'date' | 'value'>
+    )>>> }
   )>>> }
 );
 
@@ -851,40 +868,44 @@ export function useAggregateBalanceLazyQuery(baseOptions?: ApolloReactHooks.Lazy
 export type AggregateBalanceQueryHookResult = ReturnType<typeof useAggregateBalanceQuery>;
 export type AggregateBalanceLazyQueryHookResult = ReturnType<typeof useAggregateBalanceLazyQuery>;
 export type AggregateBalanceQueryResult = ApolloReactCommon.QueryResult<AggregateBalanceQuery, AggregateBalanceQueryVariables>;
-export const PortfolioCostGraphDocument = gql`
-    query portfolioCostGraph($portfolioId: Int!) {
-  portfolioCostGraph(portfolioId: $portfolioId) {
-    date
-    value
+export const AggregatePortfolioCostGraphDocument = gql`
+    query aggregatePortfolioCostGraph($portfolioIds: [Int!]) {
+  aggregatePortfolioCostGraph(portfolioIds: $portfolioIds) {
+    portfolioId
+    portfolioName
+    data {
+      date
+      value
+    }
   }
 }
     `;
 
 /**
- * __usePortfolioCostGraphQuery__
+ * __useAggregatePortfolioCostGraphQuery__
  *
- * To run a query within a React component, call `usePortfolioCostGraphQuery` and pass it any options that fit your needs.
- * When your component renders, `usePortfolioCostGraphQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAggregatePortfolioCostGraphQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAggregatePortfolioCostGraphQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePortfolioCostGraphQuery({
+ * const { data, loading, error } = useAggregatePortfolioCostGraphQuery({
  *   variables: {
- *      portfolioId: // value for 'portfolioId'
+ *      portfolioIds: // value for 'portfolioIds'
  *   },
  * });
  */
-export function usePortfolioCostGraphQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PortfolioCostGraphQuery, PortfolioCostGraphQueryVariables>) {
-        return ApolloReactHooks.useQuery<PortfolioCostGraphQuery, PortfolioCostGraphQueryVariables>(PortfolioCostGraphDocument, baseOptions);
+export function useAggregatePortfolioCostGraphQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AggregatePortfolioCostGraphQuery, AggregatePortfolioCostGraphQueryVariables>) {
+        return ApolloReactHooks.useQuery<AggregatePortfolioCostGraphQuery, AggregatePortfolioCostGraphQueryVariables>(AggregatePortfolioCostGraphDocument, baseOptions);
       }
-export function usePortfolioCostGraphLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PortfolioCostGraphQuery, PortfolioCostGraphQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<PortfolioCostGraphQuery, PortfolioCostGraphQueryVariables>(PortfolioCostGraphDocument, baseOptions);
+export function useAggregatePortfolioCostGraphLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AggregatePortfolioCostGraphQuery, AggregatePortfolioCostGraphQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AggregatePortfolioCostGraphQuery, AggregatePortfolioCostGraphQueryVariables>(AggregatePortfolioCostGraphDocument, baseOptions);
         }
-export type PortfolioCostGraphQueryHookResult = ReturnType<typeof usePortfolioCostGraphQuery>;
-export type PortfolioCostGraphLazyQueryHookResult = ReturnType<typeof usePortfolioCostGraphLazyQuery>;
-export type PortfolioCostGraphQueryResult = ApolloReactCommon.QueryResult<PortfolioCostGraphQuery, PortfolioCostGraphQueryVariables>;
+export type AggregatePortfolioCostGraphQueryHookResult = ReturnType<typeof useAggregatePortfolioCostGraphQuery>;
+export type AggregatePortfolioCostGraphLazyQueryHookResult = ReturnType<typeof useAggregatePortfolioCostGraphLazyQuery>;
+export type AggregatePortfolioCostGraphQueryResult = ApolloReactCommon.QueryResult<AggregatePortfolioCostGraphQuery, AggregatePortfolioCostGraphQueryVariables>;
 export const PortfoliosDocument = gql`
     query portfolios {
   portfolios {

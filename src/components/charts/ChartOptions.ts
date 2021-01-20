@@ -1,4 +1,10 @@
-export const areaOptions = (data: any, name: string) => ({
+type TData = {
+    portfolioId: number | undefined
+    portfolioName: string | null | undefined
+    data: any[][] | undefined
+}
+
+export const areaOptions = (data: TData[]) => ({
     chart: {
         type: "area",
         marginTop: 20,
@@ -63,16 +69,16 @@ export const areaOptions = (data: any, name: string) => ({
         timezoneOffset: -180,
     },
 
-    series: [
-        {
-            name,
-            data,
+    series: data.map((d) => {
+        return {
+            name: d.portfolioName,
+            data: d.data,
             threshold: null,
             tooltip: {
                 valueDecimals: 2,
             },
             fillColor: "rgba(143, 97, 219, .1)",
             color: "#8F61DB",
-        },
-    ],
+        }
+    }),
 })
