@@ -1,7 +1,7 @@
 import React from "react"
-import { H3 } from "GeneralStyles"
+import { H3, H4 } from "GeneralStyles"
 import FadePage from "components/fade/FadePage"
-import { Row } from "antd"
+import { Col, Row } from "antd"
 import PortfolioSelector from "components/portfolios/PortfolioSelector"
 import styled from "styled-components"
 import DividendProfitCard from "components/cards/DividendProfitCard"
@@ -42,6 +42,20 @@ const Portfolios: React.FC = observer(() => {
                 <StockTable portfolios={portfolios} />
                 <FondTable portfolios={portfolios} />
                 <BondTable portfolios={portfolios} />
+            </Content>
+
+            <Content
+                gutter={[20, 20]}
+                hidden={
+                    portfolioStore.portfolios.length === 0 ||
+                    portfolioStore.activePortfolioIds.size > 0
+                }
+            >
+                <Col span={24}>
+                    <H4 $color="grey2" $align="center">
+                        Выберите портфель
+                    </H4>
+                </Col>
             </Content>
         </FadePage>
     )

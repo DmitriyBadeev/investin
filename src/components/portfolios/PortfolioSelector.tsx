@@ -8,6 +8,7 @@ import { usePortfoliosQuery } from "finance-types"
 import Loading from "components/loading/Loading"
 import { message } from "antd"
 import { computed } from "mobx"
+import { H4, FlexCenter } from "GeneralStyles"
 
 const SelectorWrapper = styled.div`
     margin-top: 20px;
@@ -52,6 +53,13 @@ const PortfolioSelector: React.FC = observer(() => {
                         </PortfolioCard>
                     </Col>
                 ))}
+                {portfolioStore.portfolios.length === 0 && (
+                    <Col span={24}>
+                        <H4 $color="grey2" $align="center">
+                            Добавьте свой первый портфель
+                        </H4>
+                    </Col>
+                )}
             </Row>
         </SelectorWrapper>
     )

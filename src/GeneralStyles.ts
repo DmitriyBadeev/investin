@@ -6,18 +6,21 @@ const { Text: AntText } = Typography
 type TextProps = {
     $color?: "primary" | "grey2" | "black" | "red" | "green"
     $bold?: boolean
+    $align?: "center" | "left" | "right"
 }
 
 export const SmallText = styled(AntText)<TextProps>`
     font-size: 12px;
     color: ${chooseColor};
     font-weight: ${(props) => (props.$bold ? 600 : 400)};
+    text-align: ${(props) => props.$align};
 `
 
 export const Text = styled(AntText)<TextProps & { $large?: boolean }>`
     font-size: ${(props) => (props.$large ? "18px" : "15px")};
     color: ${chooseColor};
     font-weight: ${(props) => (props.$bold ? 600 : 400)};
+    text-align: ${(props) => props.$align};
 `
 
 export const H3 = styled.h3<TextProps>`
@@ -26,6 +29,7 @@ export const H3 = styled.h3<TextProps>`
     color: ${(props) => props.theme.black};
     font-family: "Open Sans", sans-serif;
     color: ${chooseColor};
+    text-align: ${(props) => props.$align};
 `
 
 export const H4 = styled.h4<TextProps>`
@@ -34,6 +38,7 @@ export const H4 = styled.h4<TextProps>`
     color: ${(props) => props.theme.black};
     font-family: "Open Sans", sans-serif;
     color: ${chooseColor};
+    text-align: ${(props) => props.$align};
 `
 
 export const FlexCenter = styled.div`
