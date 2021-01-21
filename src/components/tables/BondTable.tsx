@@ -76,7 +76,7 @@ const bondColumns = [
         render: (_items: any, item: any) => {
             return (
                 <Tooltip title={`Время обновления: ${item.updateTime}`}>
-                    <Text>{getPercent(item.price)}</Text> <br />
+                    <span>{getPercent(item.price)}</span> <br />
                     <NumberIndicatior
                         number={item.priceChange}
                         type="percent"

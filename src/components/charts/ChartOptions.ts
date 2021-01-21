@@ -33,6 +33,7 @@ const generalSeria = {
 }
 
 export const areaOptions = (data: TAreaData[]) => ({
+    ...generalOptions,
     chart: {
         type: "area",
         marginTop: 20,

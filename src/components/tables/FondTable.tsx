@@ -76,7 +76,7 @@ const fondColumns = [
         render: (_items: any, item: any) => {
             return (
                 <Tooltip title={`Время обновления: ${item.updateTime}`}>
-                    <Text>{getDoubleCurrency(item.price)}</Text> <br />
+                    <span>{getDoubleCurrency(item.price)}</span> <br />
                     <NumberIndicatior
                         number={item.priceChange}
                         type="percent"

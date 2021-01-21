@@ -81,7 +81,7 @@ const paymentColumns = [
                         item.paymentValue
                     )}`}
                 >
-                    <Text>{getCurrency(item.allPayment)}</Text>
+                    <span>{getCurrency(item.allPayment)}</span>
                 </Tooltip>
             )
         },
