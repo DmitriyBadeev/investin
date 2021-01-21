@@ -51,6 +51,7 @@ export type Queries = {
   portfolioCostGraph?: Maybe<Array<Maybe<TimeValue>>>;
   portfolioPayments?: Maybe<OperationResultOfListOfPayment>;
   portfolios?: Maybe<Array<Maybe<Portfolio>>>;
+  portfolioTypes?: Maybe<Array<Maybe<PortfolioType>>>;
   searchAsset?: Maybe<SearchData>;
   secretData?: Maybe<Scalars['String']>;
   stockCandles?: Maybe<Array<Maybe<StockCandle>>>;
@@ -176,6 +177,7 @@ export type Mutations = {
   buyAsset?: Maybe<OperationResult>;
   createPortfolio?: Maybe<OperationResult>;
   refillBalance?: Maybe<OperationResult>;
+  removePortfolio?: Maybe<OperationResult>;
   sellAsset?: Maybe<OperationResult>;
   startAssetReportsUpdate?: Maybe<Scalars['String']>;
   startPortfoliosReportUpdate?: Maybe<Scalars['String']>;
@@ -202,6 +204,11 @@ export type MutationsCreatePortfolioArgs = {
 
 export type MutationsRefillBalanceArgs = {
   refillBalanceInput?: Maybe<RefillBalanceInput>;
+};
+
+
+export type MutationsRemovePortfolioArgs = {
+  portfolioId: Scalars['Int'];
 };
 
 
@@ -254,6 +261,14 @@ export type Portfolio = {
   portfolioType?: Maybe<PortfolioType>;
   portfolioTypeId?: Maybe<Scalars['Int']>;
   userId?: Maybe<Scalars['String']>;
+};
+
+export type PortfolioType = {
+  __typename?: 'PortfolioType';
+  iconUrl?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  name?: Maybe<Scalars['String']>;
+  portfolios?: Maybe<Array<Maybe<Portfolio>>>;
 };
 
 export type OperationResultOfListOfPayment = {
@@ -527,14 +542,6 @@ export type WithdrawalBalanceInput = {
   price: Scalars['Int'];
 };
 
-export type PortfolioType = {
-  __typename?: 'PortfolioType';
-  iconUrl?: Maybe<Scalars['String']>;
-  id: Scalars['Int'];
-  name?: Maybe<Scalars['String']>;
-  portfolios?: Maybe<Array<Maybe<Portfolio>>>;
-};
-
 export type Payment = {
   __typename?: 'Payment';
   amount: Scalars['Int'];
@@ -674,6 +681,31 @@ export type SparklineQuery = (
     { __typename?: 'StockCandle' }
     & Pick<StockCandle, 'date' | 'close'>
   )>>> }
+);
+
+export type PortfolioTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PortfolioTypesQuery = (
+  { __typename?: 'Queries' }
+  & { portfolioTypes?: Maybe<Array<Maybe<(
+    { __typename?: 'PortfolioType' }
+    & Pick<PortfolioType, 'id' | 'name' | 'iconUrl'>
+  )>>> }
+);
+
+export type CreatePortfolioMutationVariables = Exact<{
+  name?: Maybe<Scalars['String']>;
+  portfolioType: Scalars['Int'];
+}>;
+
+
+export type CreatePortfolioMutation = (
+  { __typename?: 'Mutations' }
+  & { createPortfolio?: Maybe<(
+    { __typename?: 'OperationResult' }
+    & Pick<OperationResult, 'isSuccess' | 'message'>
+  )> }
 );
 
 export type PortfoliosQueryVariables = Exact<{ [key: string]: never; }>;
@@ -987,6 +1019,74 @@ export function useSparklineLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type SparklineQueryHookResult = ReturnType<typeof useSparklineQuery>;
 export type SparklineLazyQueryHookResult = ReturnType<typeof useSparklineLazyQuery>;
 export type SparklineQueryResult = ApolloReactCommon.QueryResult<SparklineQuery, SparklineQueryVariables>;
+export const PortfolioTypesDocument = gql`
+    query portfolioTypes {
+  portfolioTypes {
+    id
+    name
+    iconUrl
+  }
+}
+    `;
+
+/**
+ * __usePortfolioTypesQuery__
+ *
+ * To run a query within a React component, call `usePortfolioTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePortfolioTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePortfolioTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePortfolioTypesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PortfolioTypesQuery, PortfolioTypesQueryVariables>) {
+        return ApolloReactHooks.useQuery<PortfolioTypesQuery, PortfolioTypesQueryVariables>(PortfolioTypesDocument, baseOptions);
+      }
+export function usePortfolioTypesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PortfolioTypesQuery, PortfolioTypesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<PortfolioTypesQuery, PortfolioTypesQueryVariables>(PortfolioTypesDocument, baseOptions);
+        }
+export type PortfolioTypesQueryHookResult = ReturnType<typeof usePortfolioTypesQuery>;
+export type PortfolioTypesLazyQueryHookResult = ReturnType<typeof usePortfolioTypesLazyQuery>;
+export type PortfolioTypesQueryResult = ApolloReactCommon.QueryResult<PortfolioTypesQuery, PortfolioTypesQueryVariables>;
+export const CreatePortfolioDocument = gql`
+    mutation createPortfolio($name: String, $portfolioType: Int!) {
+  createPortfolio(name: $name, portfolioType: $portfolioType) {
+    isSuccess
+    message
+  }
+}
+    `;
+export type CreatePortfolioMutationFn = ApolloReactCommon.MutationFunction<CreatePortfolioMutation, CreatePortfolioMutationVariables>;
+
+/**
+ * __useCreatePortfolioMutation__
+ *
+ * To run a mutation, you first call `useCreatePortfolioMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePortfolioMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPortfolioMutation, { data, loading, error }] = useCreatePortfolioMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      portfolioType: // value for 'portfolioType'
+ *   },
+ * });
+ */
+export function useCreatePortfolioMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreatePortfolioMutation, CreatePortfolioMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreatePortfolioMutation, CreatePortfolioMutationVariables>(CreatePortfolioDocument, baseOptions);
+      }
+export type CreatePortfolioMutationHookResult = ReturnType<typeof useCreatePortfolioMutation>;
+export type CreatePortfolioMutationResult = ApolloReactCommon.MutationResult<CreatePortfolioMutation>;
+export type CreatePortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePortfolioMutation, CreatePortfolioMutationVariables>;
 export const PortfoliosDocument = gql`
     query portfolios {
   portfolios {

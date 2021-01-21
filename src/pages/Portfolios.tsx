@@ -15,6 +15,7 @@ import FondTable from "components/tables/FondTable"
 import BondTable from "components/tables/BondTable"
 import FuturePaymentsTable from "components/tables/FuturePaymentsTable"
 import PortfoliosChart from "components/charts/PortfoliosChart"
+import CreatePortfolioDrawer from "components/drawers/CreatePortfolioDrawer"
 
 const Content = styled(Row)`
     padding-top: 30px;
@@ -26,8 +27,9 @@ const Portfolios: React.FC = observer(() => {
 
     return (
         <FadePage>
-            <Row>
+            <Row justify="space-between" align="middle">
                 <H3>Портфели</H3>
+                <CreatePortfolioDrawer />
             </Row>
             <PortfolioSelector />
             <Content gutter={[20, 20]} hidden={portfolios.length === 0}>

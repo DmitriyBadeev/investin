@@ -1,0 +1,14 @@
+query portfolioTypes {
+    portfolioTypes {
+        id
+        name
+        iconUrl
+    }
+}
+
+mutation createPortfolio($name: String, $portfolioType: Int!) {
+    createPortfolio(name: $name, portfolioType: $portfolioType) {
+        isSuccess
+        message
+    }
+}
