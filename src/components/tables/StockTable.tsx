@@ -6,6 +6,7 @@ import { getDoubleCurrency } from "helpers/financeHelpers"
 import { getNumericStringDate } from "helpers/dateHelpers"
 import { useStockReportsLazyQuery } from "finance-types"
 import { NumberIndicatior } from "components/numbers/Indicator"
+import Sparkline from "components/charts/Sparkline"
 
 type propTypes = {
     portfolios: number[]
@@ -157,6 +158,13 @@ const stockColumns = [
             } else {
                 return getDoubleCurrency(item.paidDividends)
             }
+        },
+    },
+    {
+        key: "Sparkline",
+        title: "Изменение за неделю",
+        render: (_items: any, item: any) => {
+            return <Sparkline ticket={item.ticket} />
         },
     },
 ]

@@ -454,7 +454,7 @@ export type CurrencyAction = {
 export type StockCandle = {
   __typename?: 'StockCandle';
   close: Scalars['Float'];
-  dateTime: Scalars['DateTime'];
+  date: Scalars['Long'];
   high: Scalars['Float'];
   low: Scalars['Float'];
   open: Scalars['Float'];
@@ -658,6 +658,21 @@ export type AggregatePortfolioCostGraphQuery = (
       { __typename?: 'TimeValue' }
       & Pick<TimeValue, 'date' | 'value'>
     )>>> }
+  )>>> }
+);
+
+export type SparklineQueryVariables = Exact<{
+  ticket: Scalars['String'];
+  from: Scalars['DateTime'];
+  interval: CandleInterval;
+}>;
+
+
+export type SparklineQuery = (
+  { __typename?: 'Queries' }
+  & { stockCandles?: Maybe<Array<Maybe<(
+    { __typename?: 'StockCandle' }
+    & Pick<StockCandle, 'date' | 'close'>
   )>>> }
 );
 
@@ -936,6 +951,42 @@ export function useAggregatePortfolioCostGraphLazyQuery(baseOptions?: ApolloReac
 export type AggregatePortfolioCostGraphQueryHookResult = ReturnType<typeof useAggregatePortfolioCostGraphQuery>;
 export type AggregatePortfolioCostGraphLazyQueryHookResult = ReturnType<typeof useAggregatePortfolioCostGraphLazyQuery>;
 export type AggregatePortfolioCostGraphQueryResult = ApolloReactCommon.QueryResult<AggregatePortfolioCostGraphQuery, AggregatePortfolioCostGraphQueryVariables>;
+export const SparklineDocument = gql`
+    query Sparkline($ticket: String!, $from: DateTime!, $interval: CandleInterval!) {
+  stockCandles(ticket: $ticket, from: $from, interval: $interval) {
+    date
+    close
+  }
+}
+    `;
+
+/**
+ * __useSparklineQuery__
+ *
+ * To run a query within a React component, call `useSparklineQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSparklineQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSparklineQuery({
+ *   variables: {
+ *      ticket: // value for 'ticket'
+ *      from: // value for 'from'
+ *      interval: // value for 'interval'
+ *   },
+ * });
+ */
+export function useSparklineQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SparklineQuery, SparklineQueryVariables>) {
+        return ApolloReactHooks.useQuery<SparklineQuery, SparklineQueryVariables>(SparklineDocument, baseOptions);
+      }
+export function useSparklineLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SparklineQuery, SparklineQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SparklineQuery, SparklineQueryVariables>(SparklineDocument, baseOptions);
+        }
+export type SparklineQueryHookResult = ReturnType<typeof useSparklineQuery>;
+export type SparklineLazyQueryHookResult = ReturnType<typeof useSparklineLazyQuery>;
+export type SparklineQueryResult = ApolloReactCommon.QueryResult<SparklineQuery, SparklineQueryVariables>;
 export const PortfoliosDocument = gql`
     query portfolios {
   portfolios {

@@ -5,6 +5,7 @@ import React, { useEffect } from "react"
 import { getDoubleCurrency } from "helpers/financeHelpers"
 import { useFondReportsLazyQuery } from "finance-types"
 import { NumberIndicatior } from "components/numbers/Indicator"
+import Sparkline from "components/charts/Sparkline"
 
 type propTypes = {
     portfolios: number[]
@@ -123,6 +124,13 @@ const fondColumns = [
                     />
                 </>
             )
+        },
+    },
+    {
+        key: "Sparkline",
+        title: "Изменение за неделю",
+        render: (_items: any, item: any) => {
+            return <Sparkline ticket={item.ticket} />
         },
     },
 ]

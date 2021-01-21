@@ -1,14 +1,43 @@
-type TData = {
+type TAreaData = {
     portfolioId: number | undefined
     portfolioName: string | null | undefined
     data: any[][] | undefined
 }
 
-export const areaOptions = (data: TData[]) => ({
+const generalOptions = {
+    chart: {
+        style: {
+            fontFamily:
+                "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
+            fontSize: "12px",
+        },
+    },
+
+    tooltip: {
+        xDateFormat: "%d.%m.%Y",
+        pointFormat: "<b>{point.y} ₽</b>",
+    },
+
+    credits: {
+        enabled: false,
+    },
+
+    time: {
+        timezoneOffset: -180,
+    },
+}
+
+const generalSeria = {
+    fillColor: "rgba(143, 97, 219, .1)",
+    color: "#8F61DB",
+}
+
+export const areaOptions = (data: TAreaData[]) => ({
     chart: {
         type: "area",
         marginTop: 20,
         height: 430,
+        ...generalOptions.chart,
     },
 
     rangeSelector: {
@@ -52,7 +81,8 @@ export const areaOptions = (data: TData[]) => ({
     },
 
     tooltip: {
-        xDateFormat: "%d.%m.%Y",
+        ...generalOptions.tooltip,
+        pointFormat: "{series.name}: <b>{point.y} ₽</b>",
     },
 
     xAxis: {
@@ -61,13 +91,6 @@ export const areaOptions = (data: TData[]) => ({
             align: "left",
         },
         gridLineWidth: 1,
-    },
-    credits: {
-        enabled: false,
-    },
-
-    time: {
-        timezoneOffset: -180,
     },
 
     series: data.map((d) => {
@@ -78,8 +101,100 @@ export const areaOptions = (data: TData[]) => ({
             tooltip: {
                 valueDecimals: 2,
             },
-            fillColor: "rgba(143, 97, 219, .1)",
-            color: "#8F61DB",
+            ...generalSeria,
         }
     }),
 })
+
+export const sparklineOptions = (data: any[][]) => {
+    const values = data.map((d) => Number.parseFloat(d[1]))
+    let min = Math.min(...values)
+    let max = Math.max(...values)
+
+    const padding = min * 0.01
+    min = min - padding
+    max = max + padding
+    return {
+        ...generalOptions,
+        chart: {
+            type: "areaspline",
+            height: 35,
+            width: 150,
+            margin: [2, 0, 2, 0],
+            backgroundColor: null,
+            borderWidth: 0,
+            style: {
+                overflow: "visible",
+                ...generalOptions.chart.style,
+            },
+            skipClone: true,
+        },
+
+        title: {
+            text: "",
+        },
+
+        xAxis: {
+            labels: {
+                enabled: false,
+            },
+            title: {
+                text: null,
+            },
+            startOnTick: false,
+            endOnTick: false,
+            tickPositions: [],
+            type: "datetime",
+        },
+        yAxis: {
+            endOnTick: false,
+            startOnTick: false,
+            labels: {
+                enabled: false,
+            },
+            title: {
+                text: null,
+            },
+            tickPositions: [0],
+            min,
+            max,
+        },
+        legend: {
+            enabled: false,
+        },
+        tooltip: {
+            hideDelay: 0,
+            outside: true,
+            shared: true,
+            ...generalOptions.tooltip,
+        },
+        plotOptions: {
+            series: {
+                animation: false,
+                lineWidth: 1,
+                shadow: false,
+                states: {
+                    hover: {
+                        lineWidth: 1,
+                    },
+                },
+                marker: {
+                    radius: 1,
+                    states: {
+                        hover: {
+                            radius: 2,
+                        },
+                    },
+                },
+            },
+            column: {},
+        },
+        series: [
+            {
+                data,
+                name: "",
+                ...generalSeria,
+            },
+        ],
+    }
+}

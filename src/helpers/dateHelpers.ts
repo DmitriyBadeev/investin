@@ -6,3 +6,11 @@ export const getNumericStringDate = (date: string | number) => {
         timeZone: "Europe/Moscow",
     })
 }
+
+export const getPastDate = (pastDay: number) => {
+    const now = new Date()
+
+    now.setDate(now.getDate() - pastDay)
+
+    return now
+}
