@@ -60,17 +60,68 @@ query bondReports($portfolioIds: [Int!]) {
 }
 
 query aggregateFuturePayments($portfolioIds: [Int!]) {
-	  aggregateFuturePayments(portfolioIds: $portfolioIds){
-      isSuccess
-    	message
-    	result {
-        name
+    aggregateFuturePayments(portfolioIds: $portfolioIds) {
+        isSuccess
+        message
+        result {
+            name
+            ticket
+            amount
+            allPayment
+            paymentValue
+            registryCloseDate
+            currencyId
+        }
+    }
+}
+
+query assetOperations {
+    allAssetOperations {
+        id
+        ticket
+        date
+        amount
+        paymentPrice
+        assetAction {
+            name
+        }
+        assetType {
+            name
+        }
+        portfolioId
+        portfolio {
+            name
+        }
+    }
+}
+
+query currencyOperations {
+    allCurrencyOperations {
+        id
+        date
+        price
+        currencyAction {
+            name
+        }
+        currencyId
+        currencyName
+        portfolioId
+        portfolio {
+            name
+        }
+    }
+}
+
+query userPayments {
+    userPayments {
+        id
         ticket
         amount
-        allPayment
         paymentValue
-        registryCloseDate
-        currencyId
-      }
+        portfolioId
+        portfolio {
+            name
+        }
+        date
     }
 }

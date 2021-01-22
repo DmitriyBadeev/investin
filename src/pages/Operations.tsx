@@ -1,11 +1,18 @@
 import React from "react"
-import { H3 } from "GeneralStyles"
 import FadePage from "components/fade/FadePage"
+import CurrencyOperationsTable from "components/tables/CurrencyOperationsTable"
+import AssetOperationsTable from "components/tables/AssetOperationsTable"
+import PaymentsTable from "components/tables/PaymentsTable"
+import { Row } from "antd"
 
 const Operations: React.FC = () => {
     return (
         <FadePage>
-            <H3>Операции</H3>
+            <Row gutter={[20, 20]}>
+                <CurrencyOperationsTable />
+                <AssetOperationsTable />
+                <PaymentsTable />
+            </Row>
         </FadePage>
     )
 }

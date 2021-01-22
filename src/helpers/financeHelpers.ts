@@ -1,6 +1,15 @@
 export const THIN_NON_BREAKING_SPACE = "\u202F"
 export const NON_BREAKING_SPACE = "\u00A0"
 
+export const getSymbol = (currencyId: string) => {
+    switch (currencyId) {
+        case "SUR":
+            return "₽"
+    }
+
+    return ""
+}
+
 export const getIntegerPart = (number: number) => {
     return Math.trunc(number / 100)
         .toString()
@@ -17,7 +26,7 @@ export const getFractionalPart = (number: number) => {
 
 export const getCurrency = (number: number, currency: string = "₽") => {
     return `${getIntegerPart(number)},${getFractionalPart(
-        number
+        Math.round(number)
     )}${NON_BREAKING_SPACE}${currency}`
 }
 

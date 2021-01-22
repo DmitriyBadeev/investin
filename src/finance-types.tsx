@@ -57,6 +57,7 @@ export type Queries = {
   stockCandles?: Maybe<Array<Maybe<StockCandle>>>;
   stockReports?: Maybe<Array<Maybe<StockReport>>>;
   test?: Maybe<Scalars['String']>;
+  userPayments?: Maybe<Array<Maybe<Payment>>>;
 };
 
 
@@ -117,16 +118,6 @@ export type QueriesAggregatePortfolioPaymentsArgs = {
 
 export type QueriesAggregateStocksArgs = {
   portfolioIds?: Maybe<Array<Scalars['Int']>>;
-};
-
-
-export type QueriesAllAssetOperationsArgs = {
-  portfolioId: Scalars['Int'];
-};
-
-
-export type QueriesAllCurrencyOperationsArgs = {
-  portfolioId: Scalars['Int'];
 };
 
 
@@ -276,6 +267,17 @@ export type OperationResultOfListOfPayment = {
   isSuccess: Scalars['Boolean'];
   message?: Maybe<Scalars['String']>;
   result?: Maybe<Array<Maybe<Payment>>>;
+};
+
+export type Payment = {
+  __typename?: 'Payment';
+  amount: Scalars['Int'];
+  date: Scalars['DateTime'];
+  id: Scalars['Int'];
+  paymentValue: Scalars['Int'];
+  portfolio?: Maybe<Portfolio>;
+  portfolioId: Scalars['Int'];
+  ticket?: Maybe<Scalars['String']>;
 };
 
 export type OperationResultOfListOfPaymentData = {
@@ -542,17 +544,6 @@ export type WithdrawalBalanceInput = {
   price: Scalars['Int'];
 };
 
-export type Payment = {
-  __typename?: 'Payment';
-  amount: Scalars['Int'];
-  date: Scalars['DateTime'];
-  id: Scalars['Int'];
-  paymentValue: Scalars['Int'];
-  portfolio?: Maybe<Portfolio>;
-  portfolioId: Scalars['Int'];
-  ticket?: Maybe<Scalars['String']>;
-};
-
 export type DailyPortfolioReport = {
   __typename?: 'DailyPortfolioReport';
   cost: Scalars['Int'];
@@ -785,6 +776,60 @@ export type AggregateFuturePaymentsQuery = (
       & Pick<PaymentData, 'name' | 'ticket' | 'amount' | 'allPayment' | 'paymentValue' | 'registryCloseDate' | 'currencyId'>
     )>>> }
   )> }
+);
+
+export type AssetOperationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AssetOperationsQuery = (
+  { __typename?: 'Queries' }
+  & { allAssetOperations?: Maybe<Array<Maybe<(
+    { __typename?: 'AssetOperation' }
+    & Pick<AssetOperation, 'id' | 'ticket' | 'date' | 'amount' | 'paymentPrice' | 'portfolioId'>
+    & { assetAction?: Maybe<(
+      { __typename?: 'AssetAction' }
+      & Pick<AssetAction, 'name'>
+    )>, assetType?: Maybe<(
+      { __typename?: 'AssetType' }
+      & Pick<AssetType, 'name'>
+    )>, portfolio?: Maybe<(
+      { __typename?: 'Portfolio' }
+      & Pick<Portfolio, 'name'>
+    )> }
+  )>>> }
+);
+
+export type CurrencyOperationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrencyOperationsQuery = (
+  { __typename?: 'Queries' }
+  & { allCurrencyOperations?: Maybe<Array<Maybe<(
+    { __typename?: 'CurrencyOperation' }
+    & Pick<CurrencyOperation, 'id' | 'date' | 'price' | 'currencyId' | 'currencyName' | 'portfolioId'>
+    & { currencyAction?: Maybe<(
+      { __typename?: 'CurrencyAction' }
+      & Pick<CurrencyAction, 'name'>
+    )>, portfolio?: Maybe<(
+      { __typename?: 'Portfolio' }
+      & Pick<Portfolio, 'name'>
+    )> }
+  )>>> }
+);
+
+export type UserPaymentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserPaymentsQuery = (
+  { __typename?: 'Queries' }
+  & { userPayments?: Maybe<Array<Maybe<(
+    { __typename?: 'Payment' }
+    & Pick<Payment, 'id' | 'ticket' | 'amount' | 'paymentValue' | 'portfolioId' | 'date'>
+    & { portfolio?: Maybe<(
+      { __typename?: 'Portfolio' }
+      & Pick<Portfolio, 'name'>
+    )> }
+  )>>> }
 );
 
 export type SecretQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1308,6 +1353,135 @@ export function useAggregateFuturePaymentsLazyQuery(baseOptions?: ApolloReactHoo
 export type AggregateFuturePaymentsQueryHookResult = ReturnType<typeof useAggregateFuturePaymentsQuery>;
 export type AggregateFuturePaymentsLazyQueryHookResult = ReturnType<typeof useAggregateFuturePaymentsLazyQuery>;
 export type AggregateFuturePaymentsQueryResult = ApolloReactCommon.QueryResult<AggregateFuturePaymentsQuery, AggregateFuturePaymentsQueryVariables>;
+export const AssetOperationsDocument = gql`
+    query assetOperations {
+  allAssetOperations {
+    id
+    ticket
+    date
+    amount
+    paymentPrice
+    assetAction {
+      name
+    }
+    assetType {
+      name
+    }
+    portfolioId
+    portfolio {
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useAssetOperationsQuery__
+ *
+ * To run a query within a React component, call `useAssetOperationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAssetOperationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAssetOperationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAssetOperationsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AssetOperationsQuery, AssetOperationsQueryVariables>) {
+        return ApolloReactHooks.useQuery<AssetOperationsQuery, AssetOperationsQueryVariables>(AssetOperationsDocument, baseOptions);
+      }
+export function useAssetOperationsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AssetOperationsQuery, AssetOperationsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AssetOperationsQuery, AssetOperationsQueryVariables>(AssetOperationsDocument, baseOptions);
+        }
+export type AssetOperationsQueryHookResult = ReturnType<typeof useAssetOperationsQuery>;
+export type AssetOperationsLazyQueryHookResult = ReturnType<typeof useAssetOperationsLazyQuery>;
+export type AssetOperationsQueryResult = ApolloReactCommon.QueryResult<AssetOperationsQuery, AssetOperationsQueryVariables>;
+export const CurrencyOperationsDocument = gql`
+    query currencyOperations {
+  allCurrencyOperations {
+    id
+    date
+    price
+    currencyAction {
+      name
+    }
+    currencyId
+    currencyName
+    portfolioId
+    portfolio {
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useCurrencyOperationsQuery__
+ *
+ * To run a query within a React component, call `useCurrencyOperationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCurrencyOperationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCurrencyOperationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCurrencyOperationsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CurrencyOperationsQuery, CurrencyOperationsQueryVariables>) {
+        return ApolloReactHooks.useQuery<CurrencyOperationsQuery, CurrencyOperationsQueryVariables>(CurrencyOperationsDocument, baseOptions);
+      }
+export function useCurrencyOperationsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CurrencyOperationsQuery, CurrencyOperationsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<CurrencyOperationsQuery, CurrencyOperationsQueryVariables>(CurrencyOperationsDocument, baseOptions);
+        }
+export type CurrencyOperationsQueryHookResult = ReturnType<typeof useCurrencyOperationsQuery>;
+export type CurrencyOperationsLazyQueryHookResult = ReturnType<typeof useCurrencyOperationsLazyQuery>;
+export type CurrencyOperationsQueryResult = ApolloReactCommon.QueryResult<CurrencyOperationsQuery, CurrencyOperationsQueryVariables>;
+export const UserPaymentsDocument = gql`
+    query userPayments {
+  userPayments {
+    id
+    ticket
+    amount
+    paymentValue
+    portfolioId
+    portfolio {
+      name
+    }
+    date
+  }
+}
+    `;
+
+/**
+ * __useUserPaymentsQuery__
+ *
+ * To run a query within a React component, call `useUserPaymentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserPaymentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserPaymentsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserPaymentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserPaymentsQuery, UserPaymentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<UserPaymentsQuery, UserPaymentsQueryVariables>(UserPaymentsDocument, baseOptions);
+      }
+export function useUserPaymentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserPaymentsQuery, UserPaymentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<UserPaymentsQuery, UserPaymentsQueryVariables>(UserPaymentsDocument, baseOptions);
+        }
+export type UserPaymentsQueryHookResult = ReturnType<typeof useUserPaymentsQuery>;
+export type UserPaymentsLazyQueryHookResult = ReturnType<typeof useUserPaymentsLazyQuery>;
+export type UserPaymentsQueryResult = ApolloReactCommon.QueryResult<UserPaymentsQuery, UserPaymentsQueryVariables>;
 export const SecretDocument = gql`
     query Secret {
   secretData
