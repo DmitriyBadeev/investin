@@ -12,3 +12,24 @@ mutation createPortfolio($name: String, $portfolioType: Int!) {
         message
     }
 }
+
+mutation addPaymentInPortfolio(
+    $portfolioId: Int!
+    $ticket: String
+    $amount: Int!
+    $paymentValue: Int!
+    $date: DateTime!
+) {
+    addPaymentInPortfolio(
+        paymentInput: {
+            portfolioId: $portfolioId
+            ticket: $ticket
+            amount: $amount
+            paymentValue: $paymentValue
+            date: $date
+        }
+    ) {
+        isSuccess
+        message
+    }
+}

@@ -1,14 +1,15 @@
 import React from "react"
-import { Col, message, Table } from "antd"
+import { Col, message, Row, Table } from "antd"
 import Card from "components/cards/Card"
 import { H4, Text } from "GeneralStyles"
 import { getNumericStringDate } from "helpers/dateHelpers"
 import { UserPaymentsQuery, useUserPaymentsQuery } from "finance-types"
 import { getCurrency } from "helpers/financeHelpers"
 import { getAllValues } from "helpers/arrayHelpers"
+import CreatePaymentDrawer from "components/drawers/CreatePaymentDrawer"
 
 const PaymentsTable: React.FC = () => {
-    const { data, loading, error } = useUserPaymentsQuery()
+    const { data, loading, error, refetch } = useUserPaymentsQuery()
 
     if (error) message.error(error.message)
 
@@ -21,12 +22,20 @@ const PaymentsTable: React.FC = () => {
 
     return (
         <Col span={24}>
-            <Card title={<H4>Выплаты</H4>}>
+            <Card
+                title={
+                    <Row justify="space-between">
+                        <H4>Выплаты</H4>
+                        <CreatePaymentDrawer update={() => refetch()} />
+                    </Row>
+                }
+            >
                 <Table
                     columns={columns(data)}
                     size="small"
                     loading={loading}
                     dataSource={preparedData}
+                    style={{ marginTop: "1rem" }}
                 />
             </Card>
         </Col>
@@ -40,20 +49,6 @@ const columns = (data: UserPaymentsQuery | undefined) => {
         data?.userPayments,
         (item) => item.portfolio.name
     )
-
-    /*
-    userPayments {
-        id
-        ticket
-        amount
-        paymentValue
-        portfolioId
-        portfolio {
-            name
-        }
-        date
-    }
-    */
 
     return [
         {

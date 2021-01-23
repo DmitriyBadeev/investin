@@ -699,6 +699,23 @@ export type CreatePortfolioMutation = (
   )> }
 );
 
+export type AddPaymentInPortfolioMutationVariables = Exact<{
+  portfolioId: Scalars['Int'];
+  ticket?: Maybe<Scalars['String']>;
+  amount: Scalars['Int'];
+  paymentValue: Scalars['Int'];
+  date: Scalars['DateTime'];
+}>;
+
+
+export type AddPaymentInPortfolioMutation = (
+  { __typename?: 'Mutations' }
+  & { addPaymentInPortfolio?: Maybe<(
+    { __typename?: 'OperationResult' }
+    & Pick<OperationResult, 'isSuccess' | 'message'>
+  )> }
+);
+
 export type PortfoliosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1132,6 +1149,45 @@ export function useCreatePortfolioMutation(baseOptions?: ApolloReactHooks.Mutati
 export type CreatePortfolioMutationHookResult = ReturnType<typeof useCreatePortfolioMutation>;
 export type CreatePortfolioMutationResult = ApolloReactCommon.MutationResult<CreatePortfolioMutation>;
 export type CreatePortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePortfolioMutation, CreatePortfolioMutationVariables>;
+export const AddPaymentInPortfolioDocument = gql`
+    mutation addPaymentInPortfolio($portfolioId: Int!, $ticket: String, $amount: Int!, $paymentValue: Int!, $date: DateTime!) {
+  addPaymentInPortfolio(
+    paymentInput: {portfolioId: $portfolioId, ticket: $ticket, amount: $amount, paymentValue: $paymentValue, date: $date}
+  ) {
+    isSuccess
+    message
+  }
+}
+    `;
+export type AddPaymentInPortfolioMutationFn = ApolloReactCommon.MutationFunction<AddPaymentInPortfolioMutation, AddPaymentInPortfolioMutationVariables>;
+
+/**
+ * __useAddPaymentInPortfolioMutation__
+ *
+ * To run a mutation, you first call `useAddPaymentInPortfolioMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddPaymentInPortfolioMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addPaymentInPortfolioMutation, { data, loading, error }] = useAddPaymentInPortfolioMutation({
+ *   variables: {
+ *      portfolioId: // value for 'portfolioId'
+ *      ticket: // value for 'ticket'
+ *      amount: // value for 'amount'
+ *      paymentValue: // value for 'paymentValue'
+ *      date: // value for 'date'
+ *   },
+ * });
+ */
+export function useAddPaymentInPortfolioMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddPaymentInPortfolioMutation, AddPaymentInPortfolioMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddPaymentInPortfolioMutation, AddPaymentInPortfolioMutationVariables>(AddPaymentInPortfolioDocument, baseOptions);
+      }
+export type AddPaymentInPortfolioMutationHookResult = ReturnType<typeof useAddPaymentInPortfolioMutation>;
+export type AddPaymentInPortfolioMutationResult = ApolloReactCommon.MutationResult<AddPaymentInPortfolioMutation>;
+export type AddPaymentInPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<AddPaymentInPortfolioMutation, AddPaymentInPortfolioMutationVariables>;
 export const PortfoliosDocument = gql`
     query portfolios {
   portfolios {
