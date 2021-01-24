@@ -33,3 +33,29 @@ mutation addPaymentInPortfolio(
         message
     }
 }
+
+mutation refillBalance($portfolioId: Int!, $price: Int!, $date: DateTime!) {
+    refillBalance(
+        refillBalanceInput: {
+            price: $price
+            date: $date
+            portfolioId: $portfolioId
+        }
+    ) {
+        isSuccess
+        message
+    }
+}
+
+mutation withdrawalBalance($portfolioId: Int!, $price: Int!, $date: DateTime!) {
+    withdrawalBalance(
+        withdrawalBalanceInput: {
+            price: $price
+            date: $date
+            portfolioId: $portfolioId
+        }
+    ) {
+        isSuccess
+        message
+    }
+}

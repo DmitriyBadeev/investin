@@ -716,6 +716,36 @@ export type AddPaymentInPortfolioMutation = (
   )> }
 );
 
+export type RefillBalanceMutationVariables = Exact<{
+  portfolioId: Scalars['Int'];
+  price: Scalars['Int'];
+  date: Scalars['DateTime'];
+}>;
+
+
+export type RefillBalanceMutation = (
+  { __typename?: 'Mutations' }
+  & { refillBalance?: Maybe<(
+    { __typename?: 'OperationResult' }
+    & Pick<OperationResult, 'isSuccess' | 'message'>
+  )> }
+);
+
+export type WithdrawalBalanceMutationVariables = Exact<{
+  portfolioId: Scalars['Int'];
+  price: Scalars['Int'];
+  date: Scalars['DateTime'];
+}>;
+
+
+export type WithdrawalBalanceMutation = (
+  { __typename?: 'Mutations' }
+  & { withdrawalBalance?: Maybe<(
+    { __typename?: 'OperationResult' }
+    & Pick<OperationResult, 'isSuccess' | 'message'>
+  )> }
+);
+
 export type PortfoliosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1188,6 +1218,80 @@ export function useAddPaymentInPortfolioMutation(baseOptions?: ApolloReactHooks.
 export type AddPaymentInPortfolioMutationHookResult = ReturnType<typeof useAddPaymentInPortfolioMutation>;
 export type AddPaymentInPortfolioMutationResult = ApolloReactCommon.MutationResult<AddPaymentInPortfolioMutation>;
 export type AddPaymentInPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<AddPaymentInPortfolioMutation, AddPaymentInPortfolioMutationVariables>;
+export const RefillBalanceDocument = gql`
+    mutation refillBalance($portfolioId: Int!, $price: Int!, $date: DateTime!) {
+  refillBalance(
+    refillBalanceInput: {price: $price, date: $date, portfolioId: $portfolioId}
+  ) {
+    isSuccess
+    message
+  }
+}
+    `;
+export type RefillBalanceMutationFn = ApolloReactCommon.MutationFunction<RefillBalanceMutation, RefillBalanceMutationVariables>;
+
+/**
+ * __useRefillBalanceMutation__
+ *
+ * To run a mutation, you first call `useRefillBalanceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRefillBalanceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [refillBalanceMutation, { data, loading, error }] = useRefillBalanceMutation({
+ *   variables: {
+ *      portfolioId: // value for 'portfolioId'
+ *      price: // value for 'price'
+ *      date: // value for 'date'
+ *   },
+ * });
+ */
+export function useRefillBalanceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RefillBalanceMutation, RefillBalanceMutationVariables>) {
+        return ApolloReactHooks.useMutation<RefillBalanceMutation, RefillBalanceMutationVariables>(RefillBalanceDocument, baseOptions);
+      }
+export type RefillBalanceMutationHookResult = ReturnType<typeof useRefillBalanceMutation>;
+export type RefillBalanceMutationResult = ApolloReactCommon.MutationResult<RefillBalanceMutation>;
+export type RefillBalanceMutationOptions = ApolloReactCommon.BaseMutationOptions<RefillBalanceMutation, RefillBalanceMutationVariables>;
+export const WithdrawalBalanceDocument = gql`
+    mutation withdrawalBalance($portfolioId: Int!, $price: Int!, $date: DateTime!) {
+  withdrawalBalance(
+    withdrawalBalanceInput: {price: $price, date: $date, portfolioId: $portfolioId}
+  ) {
+    isSuccess
+    message
+  }
+}
+    `;
+export type WithdrawalBalanceMutationFn = ApolloReactCommon.MutationFunction<WithdrawalBalanceMutation, WithdrawalBalanceMutationVariables>;
+
+/**
+ * __useWithdrawalBalanceMutation__
+ *
+ * To run a mutation, you first call `useWithdrawalBalanceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useWithdrawalBalanceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [withdrawalBalanceMutation, { data, loading, error }] = useWithdrawalBalanceMutation({
+ *   variables: {
+ *      portfolioId: // value for 'portfolioId'
+ *      price: // value for 'price'
+ *      date: // value for 'date'
+ *   },
+ * });
+ */
+export function useWithdrawalBalanceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<WithdrawalBalanceMutation, WithdrawalBalanceMutationVariables>) {
+        return ApolloReactHooks.useMutation<WithdrawalBalanceMutation, WithdrawalBalanceMutationVariables>(WithdrawalBalanceDocument, baseOptions);
+      }
+export type WithdrawalBalanceMutationHookResult = ReturnType<typeof useWithdrawalBalanceMutation>;
+export type WithdrawalBalanceMutationResult = ApolloReactCommon.MutationResult<WithdrawalBalanceMutation>;
+export type WithdrawalBalanceMutationOptions = ApolloReactCommon.BaseMutationOptions<WithdrawalBalanceMutation, WithdrawalBalanceMutationVariables>;
 export const PortfoliosDocument = gql`
     query portfolios {
   portfolios {

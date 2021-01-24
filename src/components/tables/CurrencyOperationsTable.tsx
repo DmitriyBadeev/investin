@@ -1,5 +1,5 @@
 import React from "react"
-import { Col, message, Table } from "antd"
+import { Col, message, Row, Table } from "antd"
 import Card from "components/cards/Card"
 import { H4, Text } from "GeneralStyles"
 import { getNumericStringDate } from "helpers/dateHelpers"
@@ -9,9 +9,10 @@ import {
 } from "finance-types"
 import { getCurrency, getSymbol } from "helpers/financeHelpers"
 import { getAllValues } from "helpers/arrayHelpers"
+import CreateCurrencyOperationDrawer from "components/drawers/CreateCurrencyOperationDrawer"
 
 const CurrencyOperationsTable: React.FC = () => {
-    const { data, loading, error } = useCurrencyOperationsQuery()
+    const { data, loading, error, refetch } = useCurrencyOperationsQuery()
 
     if (error) message.error(error.message)
 
@@ -24,12 +25,22 @@ const CurrencyOperationsTable: React.FC = () => {
 
     return (
         <Col span={24}>
-            <Card title={<H4>Валютные операции</H4>}>
+            <Card
+                title={
+                    <Row justify="space-between">
+                        <H4>Валютные операции</H4>
+                        <CreateCurrencyOperationDrawer
+                            update={() => refetch()}
+                        />
+                    </Row>
+                }
+            >
                 <Table
                     columns={columns(getPortfolioNames(data))}
                     size="small"
                     loading={loading}
                     dataSource={preparedData}
+                    style={{ marginTop: "1rem" }}
                 />
             </Card>
         </Col>
