@@ -1,14 +1,15 @@
 import React from "react"
-import { Col, message, Table } from "antd"
+import { Col, message, Row, Table } from "antd"
 import Card from "components/cards/Card"
 import { H4, Text } from "GeneralStyles"
 import { getNumericStringDate } from "helpers/dateHelpers"
 import { useAssetOperationsQuery, AssetOperationsQuery } from "finance-types"
 import { getCurrency } from "helpers/financeHelpers"
 import { getAllValues } from "helpers/arrayHelpers"
+import CreateAssetOperationDrawer from "components/drawers/CreateAssetOperationDrawer"
 
 const AssetOperationsTable: React.FC = () => {
-    const { data, loading, error } = useAssetOperationsQuery()
+    const { data, loading, error, refetch } = useAssetOperationsQuery()
 
     if (error) message.error(error.message)
 
@@ -21,12 +22,20 @@ const AssetOperationsTable: React.FC = () => {
 
     return (
         <Col span={24}>
-            <Card title={<H4>Операции по активам</H4>}>
+            <Card
+                title={
+                    <Row justify="space-between">
+                        <H4>Операции по активам</H4>
+                        <CreateAssetOperationDrawer update={() => refetch()} />
+                    </Row>
+                }
+            >
                 <Table
                     columns={columns(data)}
                     size="small"
                     loading={loading}
                     dataSource={preparedData}
+                    style={{ marginTop: "1rem" }}
                 />
             </Card>
         </Col>

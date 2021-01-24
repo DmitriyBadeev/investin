@@ -4,21 +4,25 @@ import {
     Button,
     Col,
     Row,
-    Input,
     Radio,
     message,
     InputNumber,
     DatePicker,
+    Select,
+    Input,
 } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import React, { useState } from "react"
 import styled from "styled-components"
 import {
     usePortfoliosQuery,
-    useAddPaymentInPortfolioMutation,
+    useBuyAssetMutation,
+    useSellAssetMutation,
 } from "finance-types"
 import ru_RU from "antd/es/date-picker/locale/ru_RU"
 import Loading from "components/loading/Loading"
+
+const { Option } = Select
 
 const Footer = styled.div`
     text-align: left;
@@ -35,9 +39,10 @@ type propTypes = {
     update: () => void
 }
 
-const CreatePaymentDrawer: React.FC<propTypes> = (props) => {
+const CreateAssetOperationDrawer: React.FC<propTypes> = (props) => {
     const { data, loading, error } = usePortfoliosQuery()
-    const [mutation, paymentPayload] = useAddPaymentInPortfolioMutation()
+    const [buyMutation, buyPayload] = useBuyAssetMutation()
+    const [sellMutation, sellPayload] = useSellAssetMutation()
 
     const [visible, setVisible] = useState(false)
     const [form] = Form.useForm()
@@ -54,22 +59,46 @@ const CreatePaymentDrawer: React.FC<propTypes> = (props) => {
     }
 
     const onSubmit = async (values: any) => {
-        const response = await mutation({
-            variables: {
-                ticket: values.ticket,
-                portfolioId: values.portfolioId,
-                amount: values.amount,
-                date: values.date.format(),
-                paymentValue: Math.round(values.paymentValue * 100),
-            },
-        })
+        const type = values.type
 
-        const result = response.data?.addPaymentInPortfolio
-        if (result?.isSuccess) {
-            message.success(result?.message)
-            props.update()
+        if (type === 1) {
+            const response = await buyMutation({
+                variables: {
+                    portfolioId: values.portfolioId,
+                    date: values.date.format(),
+                    price: Math.round(values.price * 100),
+                    amount: values.amount,
+                    assetTypeId: values.assetTypeId,
+                    ticket: values.ticket,
+                },
+            })
+
+            const result = response.data?.buyAsset
+            if (result?.isSuccess) {
+                message.success(result?.message)
+                props.update()
+            } else {
+                message.error(result?.message)
+            }
         } else {
-            message.error(result?.message)
+            const response = await sellMutation({
+                variables: {
+                    portfolioId: values.portfolioId,
+                    date: values.date.format(),
+                    price: Math.round(values.price * 100),
+                    amount: values.amount,
+                    assetTypeId: values.assetTypeId,
+                    ticket: values.ticket,
+                },
+            })
+
+            const result = response.data?.sellAsset
+            if (result?.isSuccess) {
+                message.success(result?.message)
+                props.update()
+            } else {
+                message.error(result?.message)
+            }
         }
     }
 
@@ -89,15 +118,16 @@ const CreatePaymentDrawer: React.FC<propTypes> = (props) => {
     }
 
     if (error) message.error(error.message)
-    if (paymentPayload.error) message.error(paymentPayload.error.message)
+    if (buyPayload.error) message.error(buyPayload.error.message)
+    if (sellPayload.error) message.error(sellPayload.error.message)
 
     return (
         <>
             <Button type="primary" icon={<PlusOutlined />} onClick={showDrawer}>
-                Добавить выплату
+                Добавить операцию
             </Button>
             <Drawer
-                title="Добавление выплаты"
+                title="Добавление операции по активам"
                 width={720}
                 onClose={onClose}
                 visible={visible}
@@ -109,7 +139,7 @@ const CreatePaymentDrawer: React.FC<propTypes> = (props) => {
                             size="large"
                             onClick={() => clickSubmitButton()}
                             style={{ width: 200 }}
-                            loading={paymentPayload.loading}
+                            loading={sellPayload.loading || buyPayload.loading}
                             icon={<PlusOutlined />}
                         >
                             Добавить
@@ -130,6 +160,26 @@ const CreatePaymentDrawer: React.FC<propTypes> = (props) => {
                     onFinish={onSubmit}
                     hideRequiredMark
                 >
+                    <Row gutter={24}>
+                        <Col span={24}>
+                            <Form.Item
+                                name="type"
+                                label="Тип операции"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Выберите тип операции",
+                                    },
+                                ]}
+                                initialValue={1}
+                            >
+                                <Select size="large">
+                                    <Option value={1}>Покупка</Option>
+                                    <Option value={2}>Продажа</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                    </Row>
                     <Row gutter={24}>
                         <Col span={16}>
                             <Form.Item
@@ -165,6 +215,27 @@ const CreatePaymentDrawer: React.FC<propTypes> = (props) => {
                         </Col>
                     </Row>
                     <Row gutter={24}>
+                        <Col span={24}>
+                            <Form.Item
+                                name="assetTypeId"
+                                label="Тип актива"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Выберите тип актива",
+                                    },
+                                ]}
+                                initialValue={1}
+                            >
+                                <Select size="large">
+                                    <Option value={1}>Акция</Option>
+                                    <Option value={2}>Фонд</Option>
+                                    <Option value={3}>Облигация</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={24}>
                         <Col span={16}>
                             <Form.Item
                                 name="date"
@@ -179,8 +250,8 @@ const CreatePaymentDrawer: React.FC<propTypes> = (props) => {
                                 <DatePicker
                                     locale={ru_RU}
                                     style={{ width: "100%" }}
-                                    size="large"
                                     format="DD.MM.YYYY"
+                                    size="large"
                                     getPopupContainer={(trigger) =>
                                         trigger.parentElement ?? trigger
                                     }
@@ -189,12 +260,12 @@ const CreatePaymentDrawer: React.FC<propTypes> = (props) => {
                         </Col>
                         <Col span={8}>
                             <Form.Item
-                                name="paymentValue"
-                                label="Общая выплата"
+                                name="price"
+                                label="Сумма"
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Введите цену",
+                                        message: "Введите сумму",
                                     },
                                 ]}
                                 initialValue={0}
@@ -232,4 +303,4 @@ const CreatePaymentDrawer: React.FC<propTypes> = (props) => {
     )
 }
 
-export default CreatePaymentDrawer
+export default CreateAssetOperationDrawer

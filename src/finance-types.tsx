@@ -746,6 +746,42 @@ export type WithdrawalBalanceMutation = (
   )> }
 );
 
+export type BuyAssetMutationVariables = Exact<{
+  ticket?: Maybe<Scalars['String']>;
+  amount: Scalars['Int'];
+  assetTypeId: Scalars['Int'];
+  portfolioId: Scalars['Int'];
+  price: Scalars['Int'];
+  date: Scalars['DateTime'];
+}>;
+
+
+export type BuyAssetMutation = (
+  { __typename?: 'Mutations' }
+  & { buyAsset?: Maybe<(
+    { __typename?: 'OperationResult' }
+    & Pick<OperationResult, 'isSuccess' | 'message'>
+  )> }
+);
+
+export type SellAssetMutationVariables = Exact<{
+  ticket?: Maybe<Scalars['String']>;
+  amount: Scalars['Int'];
+  assetTypeId: Scalars['Int'];
+  portfolioId: Scalars['Int'];
+  price: Scalars['Int'];
+  date: Scalars['DateTime'];
+}>;
+
+
+export type SellAssetMutation = (
+  { __typename?: 'Mutations' }
+  & { sellAsset?: Maybe<(
+    { __typename?: 'OperationResult' }
+    & Pick<OperationResult, 'isSuccess' | 'message'>
+  )> }
+);
+
 export type PortfoliosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1292,6 +1328,86 @@ export function useWithdrawalBalanceMutation(baseOptions?: ApolloReactHooks.Muta
 export type WithdrawalBalanceMutationHookResult = ReturnType<typeof useWithdrawalBalanceMutation>;
 export type WithdrawalBalanceMutationResult = ApolloReactCommon.MutationResult<WithdrawalBalanceMutation>;
 export type WithdrawalBalanceMutationOptions = ApolloReactCommon.BaseMutationOptions<WithdrawalBalanceMutation, WithdrawalBalanceMutationVariables>;
+export const BuyAssetDocument = gql`
+    mutation buyAsset($ticket: String, $amount: Int!, $assetTypeId: Int!, $portfolioId: Int!, $price: Int!, $date: DateTime!) {
+  buyAsset(
+    buyAssetInput: {ticket: $ticket, amount: $amount, assetTypeId: $assetTypeId, portfolioId: $portfolioId, price: $price, date: $date}
+  ) {
+    isSuccess
+    message
+  }
+}
+    `;
+export type BuyAssetMutationFn = ApolloReactCommon.MutationFunction<BuyAssetMutation, BuyAssetMutationVariables>;
+
+/**
+ * __useBuyAssetMutation__
+ *
+ * To run a mutation, you first call `useBuyAssetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBuyAssetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [buyAssetMutation, { data, loading, error }] = useBuyAssetMutation({
+ *   variables: {
+ *      ticket: // value for 'ticket'
+ *      amount: // value for 'amount'
+ *      assetTypeId: // value for 'assetTypeId'
+ *      portfolioId: // value for 'portfolioId'
+ *      price: // value for 'price'
+ *      date: // value for 'date'
+ *   },
+ * });
+ */
+export function useBuyAssetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<BuyAssetMutation, BuyAssetMutationVariables>) {
+        return ApolloReactHooks.useMutation<BuyAssetMutation, BuyAssetMutationVariables>(BuyAssetDocument, baseOptions);
+      }
+export type BuyAssetMutationHookResult = ReturnType<typeof useBuyAssetMutation>;
+export type BuyAssetMutationResult = ApolloReactCommon.MutationResult<BuyAssetMutation>;
+export type BuyAssetMutationOptions = ApolloReactCommon.BaseMutationOptions<BuyAssetMutation, BuyAssetMutationVariables>;
+export const SellAssetDocument = gql`
+    mutation sellAsset($ticket: String, $amount: Int!, $assetTypeId: Int!, $portfolioId: Int!, $price: Int!, $date: DateTime!) {
+  sellAsset(
+    sellAssetInput: {ticket: $ticket, amount: $amount, assetTypeId: $assetTypeId, portfolioId: $portfolioId, price: $price, date: $date}
+  ) {
+    isSuccess
+    message
+  }
+}
+    `;
+export type SellAssetMutationFn = ApolloReactCommon.MutationFunction<SellAssetMutation, SellAssetMutationVariables>;
+
+/**
+ * __useSellAssetMutation__
+ *
+ * To run a mutation, you first call `useSellAssetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSellAssetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sellAssetMutation, { data, loading, error }] = useSellAssetMutation({
+ *   variables: {
+ *      ticket: // value for 'ticket'
+ *      amount: // value for 'amount'
+ *      assetTypeId: // value for 'assetTypeId'
+ *      portfolioId: // value for 'portfolioId'
+ *      price: // value for 'price'
+ *      date: // value for 'date'
+ *   },
+ * });
+ */
+export function useSellAssetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SellAssetMutation, SellAssetMutationVariables>) {
+        return ApolloReactHooks.useMutation<SellAssetMutation, SellAssetMutationVariables>(SellAssetDocument, baseOptions);
+      }
+export type SellAssetMutationHookResult = ReturnType<typeof useSellAssetMutation>;
+export type SellAssetMutationResult = ApolloReactCommon.MutationResult<SellAssetMutation>;
+export type SellAssetMutationOptions = ApolloReactCommon.BaseMutationOptions<SellAssetMutation, SellAssetMutationVariables>;
 export const PortfoliosDocument = gql`
     query portfolios {
   portfolios {

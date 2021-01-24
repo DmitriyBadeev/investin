@@ -158,7 +158,6 @@ const CreateCurrencyOperationDrawer: React.FC<propTypes> = (props) => {
                     form={form}
                     onFinish={onSubmit}
                     hideRequiredMark
-                    size="large"
                 >
                     <Row gutter={24}>
                         <Col span={24}>
@@ -173,7 +172,7 @@ const CreateCurrencyOperationDrawer: React.FC<propTypes> = (props) => {
                                 ]}
                                 initialValue={1}
                             >
-                                <Select>
+                                <Select size="large">
                                     <Option value={1}>Пополнение</Option>
                                     <Option value={2}>Вывод</Option>
                                 </Select>
@@ -196,6 +195,7 @@ const CreateCurrencyOperationDrawer: React.FC<propTypes> = (props) => {
                                     locale={ru_RU}
                                     style={{ width: "100%" }}
                                     format="DD.MM.YYYY"
+                                    size="large"
                                     getPopupContainer={(trigger) =>
                                         trigger.parentElement ?? trigger
                                     }
@@ -217,6 +217,7 @@ const CreateCurrencyOperationDrawer: React.FC<propTypes> = (props) => {
                                 <InputNumber
                                     min={1}
                                     precision={2}
+                                    size="large"
                                     formatter={(value) => `${value} ₽`}
                                     decimalSeparator=","
                                     placeholder="0.0"

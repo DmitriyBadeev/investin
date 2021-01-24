@@ -59,3 +59,49 @@ mutation withdrawalBalance($portfolioId: Int!, $price: Int!, $date: DateTime!) {
         message
     }
 }
+
+mutation buyAsset(
+    $ticket: String
+    $amount: Int!
+    $assetTypeId: Int!
+    $portfolioId: Int!
+    $price: Int!
+    $date: DateTime!
+) {
+    buyAsset(
+        buyAssetInput: {
+            ticket: $ticket
+            amount: $amount
+            assetTypeId: $assetTypeId
+            portfolioId: $portfolioId
+            price: $price
+            date: $date
+        }
+    ) {
+        isSuccess
+        message
+    }
+}
+
+mutation sellAsset(
+    $ticket: String
+    $amount: Int!
+    $assetTypeId: Int!
+    $portfolioId: Int!
+    $price: Int!
+    $date: DateTime!
+) {
+    sellAsset(
+        sellAssetInput: {
+            ticket: $ticket
+            amount: $amount
+            assetTypeId: $assetTypeId
+            portfolioId: $portfolioId
+            price: $price
+            date: $date
+        }
+    ) {
+        isSuccess
+        message
+    }
+}
