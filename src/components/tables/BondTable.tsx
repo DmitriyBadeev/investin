@@ -1,4 +1,4 @@
-import { Col, message, Table, Tooltip } from "antd"
+import { Col, message, Space, Table, Tooltip } from "antd"
 import { H4, Text, SmallText } from "GeneralStyles"
 import Card from "components/cards/Card"
 import React, { useEffect } from "react"
@@ -6,6 +6,7 @@ import { getDoubleCurrency, getPercent } from "helpers/financeHelpers"
 import { useBondReportsLazyQuery } from "finance-types"
 import { NumberIndicatior } from "components/numbers/Indicator"
 import { getNumericStringDate } from "helpers/dateHelpers"
+import AssetIcon from "components/logo/AssetIcon"
 
 type propTypes = {
     portfolios: number[]
@@ -55,10 +56,20 @@ const bondColumns = [
         dataIndex: "name",
         render: (_items: any, item: any) => {
             return (
-                <>
-                    <Text>{item.name}</Text> <br />
-                    <SmallText $color="grey2">{item.ticket}</SmallText>
-                </>
+                <Space>
+                    <AssetIcon
+                        ticket={
+                            item.ticket.startsWith("RU") ||
+                            item.ticket.startsWith("SU")
+                                ? "MINFIN"
+                                : ""
+                        }
+                    />
+                    <div>
+                        <Text>{item.name}</Text> <br />
+                        <SmallText $color="grey2">{item.ticket}</SmallText>
+                    </div>
+                </Space>
             )
         },
     },
