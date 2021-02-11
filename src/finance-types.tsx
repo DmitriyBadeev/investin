@@ -42,7 +42,7 @@ export type Queries = {
   allFuturePaymentsReport?: Maybe<Array<Maybe<PaymentDataReport>>>;
   allPortfoliosReport?: Maybe<AllPortfoliosReport>;
   assetActions?: Maybe<Array<Maybe<AssetAction>>>;
-  assetReport?: Maybe<AssetData>;
+  assets?: Maybe<Array<Maybe<Asset>>>;
   assetTypes?: Maybe<Array<Maybe<AssetType>>>;
   bondReports?: Maybe<Array<Maybe<BondReport>>>;
   currencyActions?: Maybe<Array<Maybe<CurrencyAction>>>;
@@ -54,6 +54,7 @@ export type Queries = {
   portfolioTypes?: Maybe<Array<Maybe<PortfolioType>>>;
   searchAsset?: Maybe<SearchData>;
   secretData?: Maybe<Scalars['String']>;
+  sectorsAssets?: Maybe<Array<Maybe<Asset>>>;
   stockCandles?: Maybe<Array<Maybe<StockCandle>>>;
   stockReports?: Maybe<Array<Maybe<StockReport>>>;
   test?: Maybe<Scalars['String']>;
@@ -121,8 +122,8 @@ export type QueriesAggregateStocksArgs = {
 };
 
 
-export type QueriesAssetReportArgs = {
-  ticket?: Maybe<Scalars['String']>;
+export type QueriesAssetsArgs = {
+  type?: Maybe<Scalars['String']>;
 };
 
 
@@ -148,6 +149,12 @@ export type QueriesPortfolioPaymentsArgs = {
 
 export type QueriesSearchAssetArgs = {
   ticket?: Maybe<Scalars['String']>;
+};
+
+
+export type QueriesSectorsAssetsArgs = {
+  sectors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  type?: Maybe<Scalars['String']>;
 };
 
 
@@ -402,23 +409,6 @@ export type SearchData = {
   typeName?: Maybe<Scalars['String']>;
 };
 
-export type AssetData = {
-  __typename?: 'AssetData';
-  allPrice: Scalars['Float'];
-  amount: Scalars['Int'];
-  boughtPrice: Scalars['Float'];
-  name?: Maybe<Scalars['String']>;
-  nearestDividend?: Maybe<PaymentData>;
-  paidDividends: Scalars['Float'];
-  paperProfit: Scalars['Float'];
-  paperProfitPercent: Scalars['Float'];
-  payments?: Maybe<Array<Maybe<PaymentData>>>;
-  price: Scalars['Float'];
-  priceChange: Scalars['Float'];
-  ticket?: Maybe<Scalars['String']>;
-  updateTime?: Maybe<Scalars['String']>;
-};
-
 export type AssetOperation = {
   __typename?: 'AssetOperation';
   amount: Scalars['Int'];
@@ -450,6 +440,7 @@ export type CurrencyOperation = {
 export type AssetType = {
   __typename?: 'AssetType';
   assetOperations?: Maybe<Array<Maybe<AssetOperation>>>;
+  assets?: Maybe<Array<Maybe<Asset>>>;
   id: Scalars['Int'];
   name?: Maybe<Scalars['String']>;
 };
@@ -498,6 +489,27 @@ export type CostGraphData = {
   data?: Maybe<Array<Maybe<TimeValue>>>;
   portfolioId: Scalars['Int'];
   portfolioName?: Maybe<Scalars['String']>;
+};
+
+export type Asset = {
+  __typename?: 'Asset';
+  assetType?: Maybe<AssetType>;
+  assetTypeId: Scalars['Int'];
+  capitalization: Scalars['Long'];
+  description?: Maybe<Scalars['String']>;
+  fullName?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  issueSize: Scalars['Long'];
+  latName?: Maybe<Scalars['String']>;
+  lotSize: Scalars['Int'];
+  marketFullName?: Maybe<Scalars['String']>;
+  prevClosePrice: Scalars['Float'];
+  price: Scalars['Float'];
+  priceChange: Scalars['Float'];
+  sector?: Maybe<Scalars['String']>;
+  shortName?: Maybe<Scalars['String']>;
+  ticket?: Maybe<Scalars['String']>;
+  updateTime?: Maybe<Scalars['String']>;
 };
 
 export type OperationResult = {
@@ -912,6 +924,19 @@ export type UserPaymentsQuery = (
       { __typename?: 'Portfolio' }
       & Pick<Portfolio, 'name'>
     )> }
+  )>>> }
+);
+
+export type AssetsQueryVariables = Exact<{
+  type?: Maybe<Scalars['String']>;
+}>;
+
+
+export type AssetsQuery = (
+  { __typename?: 'Queries' }
+  & { assets?: Maybe<Array<Maybe<(
+    { __typename?: 'Asset' }
+    & Pick<Asset, 'id' | 'ticket' | 'shortName' | 'lotSize' | 'price' | 'priceChange' | 'sector' | 'capitalization' | 'updateTime'>
   )>>> }
 );
 
@@ -1758,6 +1783,47 @@ export function useUserPaymentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuer
 export type UserPaymentsQueryHookResult = ReturnType<typeof useUserPaymentsQuery>;
 export type UserPaymentsLazyQueryHookResult = ReturnType<typeof useUserPaymentsLazyQuery>;
 export type UserPaymentsQueryResult = ApolloReactCommon.QueryResult<UserPaymentsQuery, UserPaymentsQueryVariables>;
+export const AssetsDocument = gql`
+    query assets($type: String) {
+  assets(type: $type) {
+    id
+    ticket
+    shortName
+    lotSize
+    price
+    priceChange
+    sector
+    capitalization
+    updateTime
+  }
+}
+    `;
+
+/**
+ * __useAssetsQuery__
+ *
+ * To run a query within a React component, call `useAssetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAssetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAssetsQuery({
+ *   variables: {
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useAssetsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AssetsQuery, AssetsQueryVariables>) {
+        return ApolloReactHooks.useQuery<AssetsQuery, AssetsQueryVariables>(AssetsDocument, baseOptions);
+      }
+export function useAssetsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AssetsQuery, AssetsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AssetsQuery, AssetsQueryVariables>(AssetsDocument, baseOptions);
+        }
+export type AssetsQueryHookResult = ReturnType<typeof useAssetsQuery>;
+export type AssetsLazyQueryHookResult = ReturnType<typeof useAssetsLazyQuery>;
+export type AssetsQueryResult = ApolloReactCommon.QueryResult<AssetsQuery, AssetsQueryVariables>;
 export const SecretDocument = gql`
     query Secret {
   secretData

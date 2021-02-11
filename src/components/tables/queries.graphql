@@ -125,3 +125,17 @@ query userPayments {
         date
     }
 }
+
+query assets($type: String) {
+    assets(type: $type) {
+        id
+        ticket
+        shortName
+        lotSize
+        price
+        priceChange
+        sector
+        capitalization
+        updateTime
+    }
+}
