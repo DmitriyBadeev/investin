@@ -81,7 +81,7 @@ const Sidebar: React.FC = () => {
                     <NavItem
                         link="/market"
                         icon={<BankOutlined />}
-                        active={location.pathname === "/market"}
+                        active={location.pathname.startsWith("/market")}
                     >
                         Рынок
                     </NavItem>

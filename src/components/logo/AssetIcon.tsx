@@ -3,13 +3,14 @@ import React from "react"
 
 type propTypes = {
     ticket: string
+    size?: "default" | "large" | "small"
 }
 
 const AssetIcon: React.FC<propTypes> = (props) => {
     return (
         <Avatar
             src={`https://storage.badeev.info/tickets/${props.ticket}.svg`}
-            size="small"
+            size={props.size || "small"}
         >
             {props.ticket[0]}
         </Avatar>

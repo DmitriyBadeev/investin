@@ -8,6 +8,7 @@ import { NumberIndicatior } from "components/numbers/Indicator"
 import Sparkline from "components/charts/Sparkline"
 import AssetIcon from "components/logo/AssetIcon"
 import { getAllValues } from "helpers/arrayHelpers"
+import { Link } from "react-router-dom"
 
 const StockMarketTable: React.FC = () => {
     const [query, { data, loading, error }] = useAssetsLazyQuery()
@@ -63,7 +64,10 @@ const columns = (data: AssetsQuery | undefined) => {
                     <Space>
                         <AssetIcon ticket={item.ticket} />
                         <div>
-                            <Text>{item.shortName}</Text> <br />
+                            <Link to={`/market/${item.ticket}`}>
+                                <Text>{item.shortName}</Text>
+                            </Link>
+                            <br />
                             <SmallText $color="grey2">{item.ticket}</SmallText>
                         </div>
                     </Space>

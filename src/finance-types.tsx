@@ -41,6 +41,7 @@ export type Queries = {
   allCurrencyOperations?: Maybe<Array<Maybe<CurrencyOperation>>>;
   allFuturePaymentsReport?: Maybe<Array<Maybe<PaymentDataReport>>>;
   allPortfoliosReport?: Maybe<AllPortfoliosReport>;
+  asset?: Maybe<OperationResultOfAsset>;
   assetActions?: Maybe<Array<Maybe<AssetAction>>>;
   assets?: Maybe<Array<Maybe<Asset>>>;
   assetTypes?: Maybe<Array<Maybe<AssetType>>>;
@@ -119,6 +120,11 @@ export type QueriesAggregatePortfolioPaymentsArgs = {
 
 export type QueriesAggregateStocksArgs = {
   portfolioIds?: Maybe<Array<Scalars['Int']>>;
+};
+
+
+export type QueriesAssetArgs = {
+  ticket?: Maybe<Scalars['String']>;
 };
 
 
@@ -510,6 +516,13 @@ export type Asset = {
   shortName?: Maybe<Scalars['String']>;
   ticket?: Maybe<Scalars['String']>;
   updateTime?: Maybe<Scalars['String']>;
+};
+
+export type OperationResultOfAsset = {
+  __typename?: 'OperationResultOfAsset';
+  isSuccess: Scalars['Boolean'];
+  message?: Maybe<Scalars['String']>;
+  result?: Maybe<Asset>;
 };
 
 export type OperationResult = {
@@ -938,6 +951,27 @@ export type AssetsQuery = (
     { __typename?: 'Asset' }
     & Pick<Asset, 'id' | 'ticket' | 'shortName' | 'lotSize' | 'price' | 'priceChange' | 'sector' | 'capitalization' | 'updateTime'>
   )>>> }
+);
+
+export type AssetQueryVariables = Exact<{
+  ticket: Scalars['String'];
+}>;
+
+
+export type AssetQuery = (
+  { __typename?: 'Queries' }
+  & { asset?: Maybe<(
+    { __typename?: 'OperationResultOfAsset' }
+    & Pick<OperationResultOfAsset, 'isSuccess' | 'message'>
+    & { result?: Maybe<(
+      { __typename?: 'Asset' }
+      & Pick<Asset, 'id' | 'ticket' | 'fullName' | 'marketFullName' | 'description' | 'sector' | 'capitalization' | 'price' | 'priceChange' | 'updateTime'>
+      & { assetType?: Maybe<(
+        { __typename?: 'AssetType' }
+        & Pick<AssetType, 'name'>
+      )> }
+    )> }
+  )> }
 );
 
 export type SecretQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1824,6 +1858,55 @@ export function useAssetsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookO
 export type AssetsQueryHookResult = ReturnType<typeof useAssetsQuery>;
 export type AssetsLazyQueryHookResult = ReturnType<typeof useAssetsLazyQuery>;
 export type AssetsQueryResult = ApolloReactCommon.QueryResult<AssetsQuery, AssetsQueryVariables>;
+export const AssetDocument = gql`
+    query asset($ticket: String!) {
+  asset(ticket: $ticket) {
+    isSuccess
+    message
+    result {
+      id
+      ticket
+      assetType {
+        name
+      }
+      fullName
+      marketFullName
+      description
+      sector
+      capitalization
+      price
+      priceChange
+      updateTime
+    }
+  }
+}
+    `;
+
+/**
+ * __useAssetQuery__
+ *
+ * To run a query within a React component, call `useAssetQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAssetQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAssetQuery({
+ *   variables: {
+ *      ticket: // value for 'ticket'
+ *   },
+ * });
+ */
+export function useAssetQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AssetQuery, AssetQueryVariables>) {
+        return ApolloReactHooks.useQuery<AssetQuery, AssetQueryVariables>(AssetDocument, baseOptions);
+      }
+export function useAssetLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AssetQuery, AssetQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AssetQuery, AssetQueryVariables>(AssetDocument, baseOptions);
+        }
+export type AssetQueryHookResult = ReturnType<typeof useAssetQuery>;
+export type AssetLazyQueryHookResult = ReturnType<typeof useAssetLazyQuery>;
+export type AssetQueryResult = ApolloReactCommon.QueryResult<AssetQuery, AssetQueryVariables>;
 export const SecretDocument = gql`
     query Secret {
   secretData

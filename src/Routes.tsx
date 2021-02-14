@@ -9,6 +9,7 @@ import {
 
 import Portfolios from "pages/Portfolios"
 import Market from "pages/Market"
+import Asset from "pages/Asset"
 import Operations from "pages/Operations"
 import { observer } from "mobx-react"
 import useStore from "store/useStore"
@@ -26,6 +27,9 @@ const Routes: React.FC = () => {
                 </PrivateRoute>
                 <PrivateRoute exact path="/market">
                     <Market />
+                </PrivateRoute>
+                <PrivateRoute exact path="/market/:ticket">
+                    <Asset />
                 </PrivateRoute>
                 <PrivateRoute exact path="/operations">
                     <Operations />
