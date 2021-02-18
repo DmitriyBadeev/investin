@@ -19,3 +19,15 @@ query Sparkline(
         close
     }
 }
+
+query StockGraph(
+    $ticket: String!
+    $from: DateTime!
+    $interval: CandleInterval!
+) {
+    stockCandles(ticket: $ticket, from: $from, interval: $interval) {
+        date
+        close
+        volume
+    }
+}

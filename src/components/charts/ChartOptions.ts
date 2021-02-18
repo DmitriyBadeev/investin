@@ -1,6 +1,5 @@
 type TAreaData = {
-    portfolioId: number | undefined
-    portfolioName: string | null | undefined
+    name: string | null | undefined
     data: any[][] | undefined
 }
 
@@ -96,7 +95,7 @@ export const areaOptions = (data: TAreaData[]) => ({
 
     series: data.map((d) => {
         return {
-            name: d.portfolioName,
+            name: d.name,
             data: d.data,
             threshold: null,
             tooltip: {
@@ -105,6 +104,119 @@ export const areaOptions = (data: TAreaData[]) => ({
             ...generalSeria,
         }
     }),
+})
+
+type TStockData = TAreaData & { volumeData: any[][] | undefined }
+
+export const stockGraphOptions = (data: TStockData) => ({
+    ...generalOptions,
+    chart: {
+        marginTop: 20,
+        height: 600,
+        ...generalOptions.chart,
+    },
+
+    rangeSelector: {
+        selected: 1,
+        inputEnabled: false,
+
+        buttons: [
+            {
+                type: "month",
+                count: 1,
+                text: "1м",
+            },
+            {
+                type: "month",
+                count: 3,
+                text: "3м",
+            },
+            {
+                type: "month",
+                count: 6,
+                text: "6м",
+            },
+            {
+                type: "ytd",
+                text: "YTD",
+            },
+            {
+                type: "year",
+                count: 1,
+                text: "1г",
+            },
+            {
+                type: "all",
+                text: "Всё",
+            },
+        ],
+    },
+
+    scrollbar: {
+        enabled: false,
+    },
+
+    tooltip: {
+        ...generalOptions.tooltip,
+        pointFormat: "{series.name}: <b>{point.y} ₽</b>",
+    },
+
+    xAxis: {
+        type: "datetime",
+        labels: {
+            align: "left",
+        },
+        gridLineWidth: 1,
+    },
+
+    yAxis: [
+        {
+            labels: {
+                align: "left",
+            },
+            height: "80%",
+            resize: {
+                enabled: true,
+            },
+        },
+        {
+            labels: {
+                align: "left",
+            },
+            top: "80%",
+            height: "20%",
+            offset: 0,
+        },
+    ],
+
+    series: [
+        {
+            type: "area",
+            name: data.name,
+            data: data.data,
+            threshold: null,
+            tooltip: {
+                valueDecimals: 2,
+            },
+            ...generalSeria,
+            label: {
+                onArea: true,
+            },
+        },
+        {
+            type: "column",
+            name: "Объем",
+            data: data.volumeData,
+            yAxis: 1,
+            color: "rgba(143, 97, 219, .4)",
+            tooltip: {
+                pointFormat: "{series.name}: <b>{point.y}</b>",
+            },
+            label: {
+                onArea: true,
+            },
+        },
+    ],
 })
 
 export const sparklineOptions = (data: any[][]) => {

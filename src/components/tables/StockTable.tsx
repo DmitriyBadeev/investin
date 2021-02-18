@@ -8,6 +8,7 @@ import { useStockReportsLazyQuery } from "finance-types"
 import { NumberIndicatior } from "components/numbers/Indicator"
 import Sparkline from "components/charts/Sparkline"
 import AssetIcon from "components/logo/AssetIcon"
+import Link from "components/links/Link"
 
 type propTypes = {
     portfolios: number[]
@@ -57,13 +58,15 @@ const stockColumns = [
         dataIndex: "name",
         render: (_items: any, item: any) => {
             return (
-                <Space>
-                    <AssetIcon ticket={item.ticket} />
-                    <div>
-                        <Text>{item.name}</Text> <br />
-                        <SmallText $color="grey2">{item.ticket}</SmallText>
-                    </div>
-                </Space>
+                <Link to={`/market/${item.ticket}`}>
+                    <Space>
+                        <AssetIcon ticket={item.ticket} />
+                        <div>
+                            {item.name} <br />
+                            <SmallText $color="grey2">{item.ticket}</SmallText>
+                        </div>
+                    </Space>
+                </Link>
             )
         },
     },

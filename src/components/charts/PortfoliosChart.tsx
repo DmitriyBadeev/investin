@@ -83,8 +83,7 @@ const PortfoliosChart: React.FC<propTypes> = (props) => {
     const preparedData =
         data?.aggregatePortfolioCostGraph?.map((portfolioDatas) => {
             return {
-                portfolioId: portfolioDatas?.portfolioId,
-                portfolioName: portfolioDatas?.portfolioName,
+                name: portfolioDatas?.portfolioName,
                 data: portfolioDatas?.data?.map((d) => {
                     const value = (d?.value || 0) / 100
                     return [d?.date || 0, value] || []

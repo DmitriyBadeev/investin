@@ -699,6 +699,21 @@ export type SparklineQuery = (
   )>>> }
 );
 
+export type StockGraphQueryVariables = Exact<{
+  ticket: Scalars['String'];
+  from: Scalars['DateTime'];
+  interval: CandleInterval;
+}>;
+
+
+export type StockGraphQuery = (
+  { __typename?: 'Queries' }
+  & { stockCandles?: Maybe<Array<Maybe<(
+    { __typename?: 'StockCandle' }
+    & Pick<StockCandle, 'date' | 'close' | 'volume'>
+  )>>> }
+);
+
 export type PortfolioTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1206,6 +1221,43 @@ export function useSparklineLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type SparklineQueryHookResult = ReturnType<typeof useSparklineQuery>;
 export type SparklineLazyQueryHookResult = ReturnType<typeof useSparklineLazyQuery>;
 export type SparklineQueryResult = ApolloReactCommon.QueryResult<SparklineQuery, SparklineQueryVariables>;
+export const StockGraphDocument = gql`
+    query StockGraph($ticket: String!, $from: DateTime!, $interval: CandleInterval!) {
+  stockCandles(ticket: $ticket, from: $from, interval: $interval) {
+    date
+    close
+    volume
+  }
+}
+    `;
+
+/**
+ * __useStockGraphQuery__
+ *
+ * To run a query within a React component, call `useStockGraphQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStockGraphQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStockGraphQuery({
+ *   variables: {
+ *      ticket: // value for 'ticket'
+ *      from: // value for 'from'
+ *      interval: // value for 'interval'
+ *   },
+ * });
+ */
+export function useStockGraphQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<StockGraphQuery, StockGraphQueryVariables>) {
+        return ApolloReactHooks.useQuery<StockGraphQuery, StockGraphQueryVariables>(StockGraphDocument, baseOptions);
+      }
+export function useStockGraphLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<StockGraphQuery, StockGraphQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<StockGraphQuery, StockGraphQueryVariables>(StockGraphDocument, baseOptions);
+        }
+export type StockGraphQueryHookResult = ReturnType<typeof useStockGraphQuery>;
+export type StockGraphLazyQueryHookResult = ReturnType<typeof useStockGraphLazyQuery>;
+export type StockGraphQueryResult = ApolloReactCommon.QueryResult<StockGraphQuery, StockGraphQueryVariables>;
 export const PortfolioTypesDocument = gql`
     query portfolioTypes {
   portfolioTypes {

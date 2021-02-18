@@ -42,6 +42,9 @@ const theme = {
     baseTransition: "0.3s",
     mainBackground: "#FAF7FF",
     cardBackground: "#FFFFFF",
+
+    linkColor: "#3a8bd6",
+    linkHoverColor: "#54abfd",
 }
 
 const App: React.FC = observer(() => {

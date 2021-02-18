@@ -9,6 +9,7 @@ import FadePage from "components/fade/FadePage"
 import Card from "components/cards/Card"
 import { Text } from "GeneralStyles"
 import styled from "styled-components"
+import StockChart from "components/charts/StockChart"
 
 type paramsTypes = {
     ticket: string
@@ -57,6 +58,10 @@ const Asset: React.FC = () => {
                         </ContentWrapper>
                     </Card>
                 </Col>
+            </Row>
+
+            <Row>
+                <StockChart ticket={props.ticket} />
             </Row>
         </FadePage>
     )

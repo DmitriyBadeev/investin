@@ -1,11 +1,12 @@
 import { Col, message, Space, Table, Tooltip } from "antd"
-import { Text, SmallText } from "GeneralStyles"
+import { SmallText } from "GeneralStyles"
 import Card from "components/cards/Card"
 import React, { useEffect } from "react"
 import { getPercent } from "helpers/financeHelpers"
 import { useAssetsLazyQuery } from "finance-types"
 import { NumberIndicatior } from "components/numbers/Indicator"
 import AssetIcon from "components/logo/AssetIcon"
+import Link from "components/links/Link"
 
 const BondMarketTable: React.FC = () => {
     const [query, { data, loading, error }] = useAssetsLazyQuery()
@@ -53,20 +54,22 @@ const columns = [
         dataIndex: "shortName",
         render: (_items: any, item: any) => {
             return (
-                <Space>
-                    <AssetIcon
-                        ticket={
-                            item.ticket.startsWith("RU") ||
-                            item.ticket.startsWith("SU")
-                                ? "MINFIN"
-                                : ""
-                        }
-                    />
-                    <div>
-                        <Text>{item.shortName}</Text> <br />
-                        <SmallText $color="grey2">{item.ticket}</SmallText>
-                    </div>
-                </Space>
+                <Link to={`/market/${item.ticket}`}>
+                    <Space>
+                        <AssetIcon
+                            ticket={
+                                item.ticket.startsWith("RU") ||
+                                item.ticket.startsWith("SU")
+                                    ? "MINFIN"
+                                    : ""
+                            }
+                        />
+                        <div>
+                            {item.shortName} <br />
+                            <SmallText $color="grey2">{item.ticket}</SmallText>
+                        </div>
+                    </Space>
+                </Link>
             )
         },
     },
