@@ -9,9 +9,9 @@ const Operations: React.FC = () => {
     return (
         <FadePage>
             <Row gutter={[20, 20]}>
-                <CurrencyOperationsTable />
-                <AssetOperationsTable />
                 <PaymentsTable />
+                <AssetOperationsTable />
+                <CurrencyOperationsTable />
             </Row>
         </FadePage>
     )

@@ -14,23 +14,16 @@ const Sparkline: React.FC<propTypes> = (props) => {
     const { data, loading } = useSparklineQuery({
         variables: {
             ticket: props.ticket,
-            from: getPastDate(7).toLocaleDateString("ru"),
+            from: getPastDate(31).toLocaleDateString("ru"),
             interval: CandleInterval.Day,
         },
     })
 
     if (loading) return <Loading size={"small"} height="40px" />
 
-    const preparedData =
-        data?.stockCandles?.map((d) => [d?.date, d?.close]) || []
+    const preparedData = data?.stockCandles?.map((d) => [d?.date, d?.close]) || []
 
-    return (
-        <HighchartsReact
-            highcharts={Highcharts}
-            options={sparklineOptions(preparedData)}
-            constructorType="chart"
-        />
-    )
+    return <HighchartsReact highcharts={Highcharts} options={sparklineOptions(preparedData)} constructorType="chart" />
 }
 
 export default Sparkline

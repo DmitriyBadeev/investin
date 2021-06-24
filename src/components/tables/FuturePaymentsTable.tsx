@@ -2,7 +2,7 @@ import { Col, message, Table, Tooltip } from "antd"
 import { Text, SmallText } from "GeneralStyles"
 import Card from "components/cards/Card"
 import React, { useEffect } from "react"
-import { getCurrency } from "helpers/financeHelpers"
+import { getDoubleCurrency } from "helpers/financeHelpers"
 import { getNumericStringDate } from "helpers/dateHelpers"
 import { useAggregateFuturePaymentsLazyQuery } from "finance-types"
 
@@ -11,10 +11,7 @@ type propTypes = {
 }
 
 const FuturePaymentsTable: React.FC<propTypes> = (props) => {
-    const [
-        query,
-        { data, loading, error },
-    ] = useAggregateFuturePaymentsLazyQuery()
+    const [query, { data, loading, error }] = useAggregateFuturePaymentsLazyQuery()
 
     useEffect(() => {
         query({ variables: { portfolioIds: props.portfolios } })
@@ -76,12 +73,8 @@ const paymentColumns = [
         sorter: (a: any, b: any) => a.allPayment - b.allPayment,
         render: (_items: any, item: any) => {
             return (
-                <Tooltip
-                    title={`Выплата за штуку: ${getCurrency(
-                        item.paymentValue
-                    )}`}
-                >
-                    <span>{getCurrency(item.allPayment)}</span>
+                <Tooltip title={`Выплата за штуку: ${item.paymentValue} ₽`}>
+                    <span>{getDoubleCurrency(item.allPayment)}</span>
                 </Tooltip>
             )
         },
@@ -90,8 +83,7 @@ const paymentColumns = [
         key: "registryCloseDate",
         title: "Дата",
         dataIndex: "registryCloseDate",
-        sorter: (a: any, b: any) =>
-            Date.parse(a.registryCloseDate) - Date.parse(b.registryCloseDate),
+        sorter: (a: any, b: any) => Date.parse(a.registryCloseDate) - Date.parse(b.registryCloseDate),
         render: (_items: any, item: any) => {
             return <Text>{getNumericStringDate(item.registryCloseDate)}</Text>
         },
